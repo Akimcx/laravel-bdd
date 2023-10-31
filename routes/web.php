@@ -7,6 +7,7 @@ use App\Http\Controllers\InternshipsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChairController;
 use App\Http\Controllers\ProfController;
+use App\Http\Controllers\StudentController;
 use App\Models\Prof;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,7 @@ Route::get('/', function () {
 Route::resource("internships", InternshipsController::class);
 Route::resource("interns", InternController::class);
 Route::resource("chairs", ChairController::class);
+Route::resource("students", StudentController::class);
 
 Route::prefix("dashboard")->controller(DashboardController::class)
     ->middleware(['auth'])
@@ -37,7 +39,6 @@ Route::prefix("dashboard")->controller(DashboardController::class)
 
         Route::resource("profs", ProfController::class);
         Route::resource("facs", FacController::class);
-        // Route::resource("chaires", ChairController::class);
         Route::get("profs/{prof}/restore", [ProfileController::class, 'restore'])->name("prof.restore");
     });
 

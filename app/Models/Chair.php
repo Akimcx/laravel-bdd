@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Chair
@@ -40,6 +41,11 @@ class Chair extends Model
         "fac_id",
         "vacation",
     ];
+
+    function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
+    }
 
     function prof(): BelongsTo
     {
