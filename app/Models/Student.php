@@ -11,6 +11,9 @@ class Student extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        "first_name", "last_name", "presence", "chair_id"
+    ];
     function chair(): BelongsTo
     {
         return $this->belongsTo(Chair::class);

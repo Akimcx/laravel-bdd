@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('first_name', 50);
+            $table->string('profile')->virtualAs('"https://ui-avatars.com/api/?name=" || `first_name` || "+" || `last_name` || "&background=random&rounded=true&format=svg&length=2"');
             $table->string('last_name', 150);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

@@ -3,69 +3,92 @@
 @section('content')
     <main class="fill-white text-white">
         <div class="container mx-auto w-[95%]">
-            <section>
-                @include('chairs.shared.controls')
-            </section>
-            <section class="all" id="all" style="margin-bottom: 1em; display: flex; gap: 1em">
-                <form>
-                    <input type="text" name="register" hidden value="<%= JSON.stringify(register) %>" />
-                    <button hx-target="#all" hx-post="/api/allStudents" class="btn-prm" id="showAll">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512">
-                            <path
-                                d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
-                        </svg>
-                        Show All
-                    </button>
-                </form>
-                <div class="allStudents">
-                    <div style="display: flex">
-                        <p style="width: 100px">First Name</p>
-                        <p>Last Name</p>
+            <dialog id="addDialog">
+                <form class="card grid-col-2 grid text-gray-800" action="{{ route('students.store', ['chair' => $chair]) }}"
+                    method="post">
+                    @csrf
+                    <div class="">
+                        <label for="">Nom</label>
+                        <input class="text-gray-800" type="text" name="first_name" value="{{ old('first_name') }}">
                     </div>
+                    @error('first_name')
+                        <p>{{ $message }}</p>
+                    @enderror
+                    <div class="">
+                        <label for="">Prénom</label>
+                        <input class="text-gray-800" type="text" name="last_name" value="{{ old('last_name') }}">
+                    </div>
+                    @error('last_name')
+                        <p>{{ $message }}</p>
+                    @enderror
+                    <div class="">
+                        <label for="">Présence</label>
+                        <select class="text-gray-800" name="presence" id="presence">
+                            <option value="Présent">Présent</option>
+                            <option value="Non Présent">Non Présent</option>
+                        </select>
+                    </div>
+                    @error('presence')
+                        <p>{{ $message }}</p>
+                    @enderror
+                    <div class="">
+                        <button class="btn btn-primary">Ajouter</button>
+                        <button class="btn btn-outline">Annuler</button>
+                    </div>
+                </form>
+            </dialog>
+            <section class="flex gap-4 rounded bg-gray-800 p-2">
+                @include('chairs.shared.controls')
+                <div class="relative rounded dark:text-gray-800">
+                    <input class="rounded pr-10 focus:border-gray-500" type="text" name="filter" id="filter" />
+                    <button class="absolute bottom-0 right-0 top-0 bg-gray-500 fill-white px-2">
+                        @include('chairs.shared.search')
+                    </button>
                 </div>
             </section>
-            <section class="flex justify-between gap-4">
-                <div class="pills prof">
-                    <p class="const">Professeur</p>
-                    <p class="let">M. {{ $chair->prof->last_name }}</p>
-                </div>
-                <div class="pills fac">
-                    <p class="const">Faculté</p>
-                    <p class="let">{{ $chair->fac->sigle }}</p>
-                </div>
-                <div class="pills vacation">
-                    <p class="const">Vacation</p>
-                    <p class="let">{{ $chair->vacation }}</p>
-                </div>
-                <div class="pills date">
-                    <p class="const">Date</p>
-                    <p class="let">{{ $chair->dates }}</p>
-                </div>
+            <section class="mt-10 flex justify-between">
+                @include('chairs.shared.pill', ['label' => 'Professeur'])
+                @include('chairs.shared.pill', ['label' => 'Faculté'])
+                @include('chairs.shared.pill', ['label' => 'Vacation'])
+                @include('chairs.shared.pill', ['label' => 'Date'])
             </section>
-            <section class="students">
+            <section class="students mt-5">
                 @include('dashboard.shared.flash')
                 <small>
-                    {{-- Liste des participants: {{ $students->count() }} --}}
+                    Liste des participants: {{ $students->count() }}
                     enregistrements</small>
                 <div>
-                    <div class="grid grid-cols-3">
+                    <div class="grid grid-cols-3 rounded bg-gray-800 p-1 text-center">
                         <p class="tcell">
                             Prénom
                         </p>
                         <p class="tcell">Nom</p>
                         <p class="tcell">Présence</p>
                     </div>
-                    <div class="grid grid-cols-3">
-                        <div class="trow-wrapper">
-                            <input type="checkbox" name="students" value="<%= students[0].id %>" />
-                            <ul is="chaire-row"></ul>
-                        </div>
+                    <div class="">
+                        @foreach ($students as $student)
+                            <div class="grid grid-cols-3 text-center even:rounded even:bg-gray-700">
+                                {{-- <input type="checkbox" name="students" value="<%= students[0].id %>" /> --}}
+                                <p class="p-2">{{ $student->first_name }}</p>
+                                <p class="p-2">{{ $student->last_name }}</p>
+                                <p class="p-2">{{ $student->presence }}</p>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </section>
-            <section>
-                {{ $chair->links }}
-            </section>
+            {{-- <section>
+                hey
+                @dump($chairs->links())
+                {{ $chairs->currentPage() }}
+            </section> --}}
         </div>
     </main>
+    <script>
+        const addBtn = document.getElementById("add")
+        addBtn.addEventListener("click", e => {
+            const dialog = document.getElementById("addDialog")
+            dialog.showModal()
+        })
+    </script>
 @endsection

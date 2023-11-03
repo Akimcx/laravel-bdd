@@ -6,6 +6,7 @@ use App\Http\Requests\StoreChairRequest;
 use App\Models\Chair;
 use App\Models\Fac;
 use App\Models\Prof;
+use App\Models\Student;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -53,8 +54,11 @@ class ChairController extends Controller
      */
     public function show(Chair $chair)
     {
-        // dd($chair);
-        return view("chairs.show", ["chair" => $chair]);
+        return view("chairs.show", [
+            "chair" => $chair,
+            "students" => $chair->students,
+            "chairs" => Chair::paginate(1),
+        ]);
     }
 
     /**

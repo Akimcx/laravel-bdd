@@ -30,7 +30,8 @@ Route::get('/', function () {
 Route::resource("internships", InternshipsController::class);
 Route::resource("interns", InternController::class);
 Route::resource("chairs", ChairController::class);
-Route::resource("students", StudentController::class);
+Route::resource("students", StudentController::class)->except('store');
+Route::post('/students/{chair}', [StudentController::class, 'store'])->name('students.store');
 
 Route::prefix("dashboard")->controller(DashboardController::class)
     ->middleware(['auth'])

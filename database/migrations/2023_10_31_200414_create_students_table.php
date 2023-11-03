@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->enum('presence', ['Présent', 'Non Présent']);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreignIdFor(Chair::class)->constrained()->cascadeOnDelete();
         });
     }

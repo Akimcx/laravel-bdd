@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
             $table->date('dates');
             $table->softDeletes();
-            $table->unique(['fac_id', 'prof_id', 'vaction']);
+            $table->unique(['fac_id', 'prof_id', 'vacation']);
         });
     }
 

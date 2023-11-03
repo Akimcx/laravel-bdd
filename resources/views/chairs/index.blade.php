@@ -13,13 +13,28 @@
             @else
                 <section id="content" class="">
                     <div class="wrapper">
-                        @include('chairs.shared.controls')
+                        <div class="flex gap-4 rounded bg-gray-800 p-1">
+                            <a class="btn btn-primary" href="{{ route('chairs.create') }}">Ajouter</a>
+                            @auth
+                                <form action="{{ route('chairs.create') }}" method="post">
+                                    <button class="btn btn-primary">Supprimer</button>
+                                </form>
+                            @endauth
+                            <div class="relative rounded dark:text-gray-800">
+                                <input class="rounded pr-10 focus:border-gray-500" type="text" name="filter"
+                                    id="filter" />
+                                <button class="absolute bottom-0 right-0 top-0 bg-gray-500 fill-white px-2">
+                                    @include('chairs.shared.search')
+                                </button>
+                            </div>
+                        </div>
+                        {{-- @include('chairs.shared.controls') --}}
                         <section id="elements" class="elements">
                             <small class="caption">
                                 Liste des chaires: {{ $chairs->count() }} enregistrements
                             </small>
-                            <div class="">
-                                <div class="grid grid-cols-4">
+                            <div class="rounded text-center">
+                                <div class="grid grid-cols-4 justify-center rounded bg-gray-800 p-1 text-center">
                                     <p class="">Date</p>
                                     <p class="">Faculté</p>
                                     <p class="">Professeur</p>

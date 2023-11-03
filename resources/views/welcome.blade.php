@@ -2,12 +2,12 @@
 @section('title', 'Acceuil')
 @section('content')
     <main>
-        <div class="container mx-auto">
-            <a href="{{ route('internships.index') }}" class="btn-prm">Stages</a>
-            <a href="{{ route('internships.index') }}" class="btn-prm">Formations</a>
-            <a href="{{ route('chairs.index') }}" class="btn-prm">Chaires</a>
-            <a href="{{ route('internships.index') }}" class="btn-prm">Membres</a>
-            <a href="{{ route('internships.index') }}" class="btn-prm">Banque de ressources</a>
+        <div class="card container mx-auto grid grid-cols-2 gap-4 text-center">
+            <a class="btn btn-primary" href="{{ route('internships.index') }}">Stages</a>
+            <a class="btn btn-primary" href="{{ route('internships.index') }}">Formations</a>
+            <a class="btn btn-primary" href="{{ route('chairs.index') }}">Chaires</a>
+            <a class="btn btn-primary" href="{{ route('internships.index') }}">Membres</a>
+            <a class="btn btn-primary" href="{{ route('internships.index') }}">Banque de ressources</a>
         </div>
     </main>
 @endsection
