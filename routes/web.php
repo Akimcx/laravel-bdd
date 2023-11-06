@@ -30,7 +30,6 @@ Route::get('/', function () {
 Route::resource("internships", InternshipsController::class);
 Route::resource("interns", InternController::class);
 Route::resource("chairs", ChairController::class);
-Route::resource("students", StudentController::class)->except('store');
 Route::post('/students/{chair}', [StudentController::class, 'store'])->name('students.store');
 
 Route::prefix("dashboard")->controller(DashboardController::class)
@@ -38,6 +37,7 @@ Route::prefix("dashboard")->controller(DashboardController::class)
     ->name("dashboard.")->group(function () {
         Route::get('/', "index")->name("index");
 
+        Route::resource("students", StudentController::class)->except('store');
         Route::resource("profs", ProfController::class);
         Route::resource("facs", FacController::class);
         Route::get("profs/{prof}/restore", [ProfileController::class, 'restore'])->name("prof.restore");

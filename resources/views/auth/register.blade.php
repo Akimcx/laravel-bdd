@@ -2,9 +2,9 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center justify-between gap-2">
             <!-- First name -->
-            <div>
+            <div class="w-full">
                 <x-input-label for="first_name" :value="__('First name')" />
                 <x-text-input id="first_name" class="mt-1 block w-full" type="text" name="first_name" :value="old('first_name')"
                     required autofocus autocomplete="first_name" />
@@ -12,7 +12,7 @@
             </div>
 
             <!-- Last name -->
-            <div>
+            <div class="w-full">
                 <x-input-label for="last_name" :value="__('Last name')" />
                 <x-text-input id="last_name" class="mt-1 block w-full" type="text" name="last_name" :value="old('last_name')"
                     required autofocus autocomplete="last_name" />

@@ -15,5 +15,9 @@
         <div class="card">
             <a href="{{ route('chairs.index') }}" class="block text-center text-xl font-semibold">Chaires</a>
         </div>
+        <div class="card">
+            <a href="{{ route('dashboard.students.index') }}"
+                class="block text-center text-xl font-semibold">Étudiants</a>
+        </div>
     </div>
 </x-app-layout>

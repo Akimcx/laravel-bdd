@@ -6,9 +6,11 @@ use App\Http\Requests\StoreChairRequest;
 use App\Models\Chair;
 use App\Models\Fac;
 use App\Models\Prof;
-use App\Models\Student;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class ChairController extends Controller
@@ -26,8 +28,11 @@ class ChairController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
+    public function create(): View | RedirectResponse
     {
+        if (Gate::denies("create-chair")) {
+            return to_route("login");
+        }
         return view("chairs.create", [
             "profs" => Prof::all(),
             "facs" => Fac::all()
@@ -54,9 +59,14 @@ class ChairController extends Controller
      */
     public function show(Chair $chair)
     {
+        // dd(request()->query()["sort"] ?? "hello");
         return view("chairs.show", [
             "chair" => $chair,
             "students" => $chair->students,
+            // "students" => DB::table('students')
+            //     ->where('chair_id', $chair->id)
+            //     ->orderBy('first_name', 'desc')
+            //     ->get(),
             "chairs" => Chair::paginate(1),
         ]);
     }

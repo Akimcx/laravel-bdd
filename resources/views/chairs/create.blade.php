@@ -3,62 +3,78 @@
 @section('content')
     <main>
         <div class="container mx-auto flex w-[95%] items-center justify-center">
-            @foreach ($errors->all() as $message)
-                <p>{{ $message }}</p>
-            @endforeach
-            <form action="{{ route('chairs.store') }}" method="post" class="card grid w-full grid-cols-2 gap-4">
-                @csrf
-                <div class="relative text-black">
-                    <select class="w-full" name="prof_id" id="prof" required>
-                        <option value="">Choisir</option>
-                        @foreach ($profs as $prof)
-                            <option value="{{ $prof->id }}">{{ $prof->name }}</option>
-                        @endforeach
-                    </select>
-                    <label class="absolute" for="prof">Professeur</label>
-                    @error('prof_id')
-                        <p>{{ $message }}</p>
-                    @enderror
+            @if ($profs->isEmpty() || $facs->isEmpty())
+                @php
+                    $title = $profs->isEmpty() ? 'professeurs' : 'facultés';
+                    $route = $profs->isEmpty() ? route('dashboard.profs.create') : route('dashboard.facs.create');
+                @endphp
+                <div class="card">
+                    <h1 class="mb-2 text-xl text-slate-100">La liste des {{ $title }} est vide</h1>
+                    <a class="btn btn-primary" href="{{ $route }}">Ajouter</a>
                 </div>
-                <div class="relative text-black">
-                    <select class="w-full" name="fac_id" id="fac" required>
-                        <option value="">Choisir</option>
-                        @foreach ($facs as $fac)
-                            <option value="{{ $fac->id }}">{{ $fac->sigle }}</option>
-                        @endforeach
-                    </select>
-                    <label class="absolute" for="fac">Faculté</label>
-                    @error('fac_id')
-                        <p>{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="relative text-black">
-                    <select class="w-full" name="vacation" id="vacation" required>
-                        <option value="">Choisir</option>
-                        <option value="AM">AM</option>
-                        <option value="PM">PM</option>
-                    </select>
-                    <label class="absolute" for="vacation">Vacation</label>
-                    @error('vacation')
-                        <p>{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="relative text-black">
-                    <input class="block w-full" type="date" name="dates" id="date" required />
-                    <label class="absolute" for="date">Date</label>
-                    @error('dates')
-                        <p>{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="col-span-2 flex items-center justify-center gap-4">
-                    <button class="btn btn-primary w-full" id="confirm_new_sheet" type="submit">
-                        Ajouter
-                    </button>
-                    <a href="{{ route('chairs.index') }}" class="btn btn-outline w-full text-center" id="cancel_new_sheet">
-                        Annuler
-                    </a>
-                </div>
-            </form>
+            @else
+                @foreach ($errors->all() as $message)
+                    <p>{{ $message }}</p>
+                @endforeach
+                <form action="{{ route('chairs.store') }}" method="post" class="card grid w-full grid-cols-2 gap-4">
+                    @csrf
+                    <div class="">
+                        <label class="mb-2" for="prof">Professeur</label>
+                        <select class="w-full rounded bg-gray-800 p-2 text-slate-100 outline outline-2 outline-slate-300"
+                            name="prof_id" id="prof" required>
+                            <option value="">Choisir</option>
+                            @foreach ($profs as $prof)
+                                <option value="{{ $prof->id }}">{{ $prof->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('prof_id')
+                            <p>{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="relative text-slate-100">
+                        <label class="" for="fac">Faculté</label>
+                        <select class="w-full rounded bg-gray-800 p-2 text-slate-100 outline outline-2 outline-slate-300"
+                            name="fac_id" id="fac" required>
+                            <option value="">Choisir</option>
+                            @foreach ($facs as $fac)
+                                <option value="{{ $fac->id }}">{{ $fac->sigle }}</option>
+                            @endforeach
+                        </select>
+                        @error('fac_id')
+                            <p>{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="relative text-slate-100">
+                        <label for="vacation">Vacation</label>
+                        <select class="w-full rounded bg-gray-800 p-2 text-slate-100 outline outline-2 outline-slate-300"
+                            name="vacation" id="vacation" required>
+                            <option value="">Choisir</option>
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                        @error('vacation')
+                            <p>{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="relative text-slate-100">
+                        <label for="date">Date</label>
+                        <input class="w-full rounded bg-gray-800 p-2 text-slate-100 outline outline-2 outline-slate-300"
+                            type="date" name="dates" id="date" required />
+                        @error('dates')
+                            <p>{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="col-span-2 flex items-center gap-4">
+                        <button class="btn btn-primary flex-grow" id="confirm_new_sheet" type="submit">
+                            Ajouter
+                        </button>
+                        <a class="btn btn-outline flex-grow text-center" href="{{ route('chairs.index') }}"
+                            id="cancel_new_sheet">
+                            Annuler
+                        </a>
+                    </div>
+                </form>
         </div>
+        @endif
     </main>
 @endsection

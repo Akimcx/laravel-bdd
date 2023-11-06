@@ -20,10 +20,11 @@
                                     <button class="btn btn-primary">Supprimer</button>
                                 </form>
                             @endauth
-                            <div class="relative rounded dark:text-gray-800">
-                                <input class="rounded pr-10 focus:border-gray-500" type="text" name="filter"
-                                    id="filter" />
-                                <button class="absolute bottom-0 right-0 top-0 bg-gray-500 fill-white px-2">
+                            <div class="group relative h-5/6">
+                                <input
+                                    class="h-full scale-0 rounded p-2 pr-10 group-focus:scale-100 dark:bg-transparent dark:text-slate-100 dark:outline dark:outline-1 dark:outline-gray-400"
+                                    type="text" name="filter" id="filter" />
+                                <button class="absolute bottom-0 right-0 top-0 px-2 dark:bg-gray-500 dark:fill-slate-100">
                                     @include('chairs.shared.search')
                                 </button>
                             </div>

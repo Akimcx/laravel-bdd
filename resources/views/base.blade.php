@@ -18,28 +18,19 @@
             @auth
                 <div class="flex items-center gap-2 fill-white">
                     <div class="dropdown">
-                        <label tabindex="0" class="btn m-1">Click</label>
-                        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                            <li><a>Item 1</a></li>
-                            <li><a>Item 2</a></li>
-                        </ul>
-                    </div>
-                    <div class="dropdown">
-
                         <p tabindex="0" class="h-7">
                             <img class="h-full" src="{{ Auth::user()->profile }}" alt="Profile Picture">
                         </p>
-                        <ul tabindex="0" class="dropdown-content">
+                        <ul tabindex="0" class="back dropdown-content">
+                            <a href="{{ route('dashboard.index') }}">Dashboard</a>
                             <form action="{{ route('logout') }}">
                                 @csrf
                                 <button class="btn btn-primary px-1 py-1 text-sm">
                                     Logout
                                 </button>
                             </form>
-
                         </ul>
                     </div>
-
                 </div>
             @else
                 <div class="flex gap-1">

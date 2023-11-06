@@ -29,24 +29,24 @@
                 </div>
                 <div class="flex flex-col gap-4">
                     @foreach ($facs as $fac)
-                        <div class="grid grid-cols-[100px_auto_150px] gap-4 border-b p-1">
+                        <div class="grid grid-cols-[100px_auto_150px] items-center gap-4 p-1">
                             <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ $fac->sigle }}</div>
                             <div class="overflow-hidden text-ellipsis whitespace-nowrap">{{ $fac->name }}</div>
                             <div class="grid grid-cols-2 gap-4">
-                                <a class="btn btn-primary block py-1 text-center"
+                                <a class="btn btn-primary py-1 text-center"
                                     href={{ route('dashboard.facs.edit', ['fac' => $fac]) }}>Edit</a>
                                 @if ($fac->trashed())
                                     <form class="w-full" action="{{ route('dashboard.fac.restore', ['fac' => $fac]) }}"
                                         method="post">
                                         @csrf
-                                        <button class="btn btn-danger w-full py-1">Restore</button>
+                                        <button class="btn-danger btn w-full py-1">Restore</button>
                                     </form>
                                 @else
                                     <form class="w-full" action="{{ route('dashboard.facs.destroy', ['fac' => $fac]) }}"
                                         method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class="btn btn-danger py-1">Delete</button>
+                                        <button class="btn-danger btn py-1">Delete</button>
                                     </form>
                                 @endif
                             </div>

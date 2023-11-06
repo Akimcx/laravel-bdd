@@ -29,24 +29,24 @@
                 </thead>
                 <tbody>
                     @foreach ($profs as $prof)
-                        <tr>
+                        <tr class="bg-gray-800 hover:bg-gray-900">
                             <td>{{ $prof->first_name }}</td>
                             <td>{{ $prof->last_name }}</td>
                             <td class="grid grid-cols-2 gap-4">
-                                <a class="btn btn-primary block py-1 text-center"
+                                <a class="btn btn-primary text-center"
                                     href={{ route('dashboard.profs.edit', ['prof' => $prof]) }}>Edit</a>
                                 @if ($prof->trashed())
                                     <form class="w-full" action="{{ route('dashboard.prof.restore', ['prof' => $prof]) }}"
                                         method="post">
                                         @csrf
-                                        <button class="btn btn-danger w-full py-1">Restore</button>
+                                        <button class="btn-danger btn w-full py-1">Restore</button>
                                     </form>
                                 @else
                                     <form class="w-full" action="{{ route('dashboard.profs.destroy', ['prof' => $prof]) }}"
                                         method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class="btn btn-danger w-full py-1">Delete</button>
+                                        <button class="btn-danger btn w-full py-1">Delete</button>
                                     </form>
                                 @endif
                             </td>

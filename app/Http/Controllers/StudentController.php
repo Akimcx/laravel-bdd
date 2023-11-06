@@ -13,9 +13,9 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
-        //
+        return view("dashboard.students.index", ["students" => Student::paginate(10)]);
     }
 
     /**
