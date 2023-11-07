@@ -8,8 +8,6 @@ use App\Models\Fac;
 use App\Models\Prof;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
@@ -20,24 +18,25 @@ class ChairController extends Controller
      */
     public function index(): View
     {
-        $chairs = DB::table('chairs')
-            ->join('profs', 'prof_id', '=', 'profs.id')
-            ->join('facs', 'fac_id', '=', 'facs.id');
-        // dd($chairs->get());
+
+        if (!request()->query()) {
+            return view("chairs.index", [
+                "chairs" => Chair::paginate(10)
+            ]);
+        }
+        // dd(Chair::orderByProf()->get()[0]->prof->name);
         foreach (request()->query() as $key => $value) {
             switch ($key) {
                 case "order_asc":
-                    $chairs = $chairs->orderBy($value);
+                    $chairs = Chair::orderByField($value);
                     break;
                 case 'order_desc':
-                    $chairs = $chairs->orderByDesc($value);
-                    break;
-                default:
+                    $chairs = Chair::orderByField($value, 'desc');
                     break;
             }
         }
         return view("chairs.index", [
-            "chairs" => $chairs->get()
+            "chairs" => $chairs->paginate(10)
         ]);
     }
 

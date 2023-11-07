@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,6 +42,27 @@ class Chair extends Model
         "fac_id",
         "vacation",
     ];
+
+    public function scopeOrderByField(Builder $query, string $table, string $direction = 'asc')
+    {
+        if ($table == "vacation" || $table == "dates") {
+            $query->orderBy($table, $direction);
+            return;
+        }
+        $model = $table == 'profs' ? Prof::class : Fac::class;
+        $id = $table == 'profs' ? 'prof_id' : 'fac_id';
+        if ($direction == 'desc') {
+            $query->orderByDesc(
+                $model::select($table . '.name')
+                    ->whereColumn($table . '.id', $id)
+            );
+        } else {
+            $query->orderBy(
+                $model::select($table . '.name')
+                    ->whereColumn($table . '.id', $id)
+            );
+        }
+    }
 
     function students(): HasMany
     {

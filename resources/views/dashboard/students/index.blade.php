@@ -61,6 +61,7 @@
                     @endforeach
                 </div>
             </div>
+            {{ $students->links() }}
         @endempty
     </div>
 </x-app-layout>
