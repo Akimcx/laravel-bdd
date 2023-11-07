@@ -1,4 +1,4 @@
-@extends('base')
+@extends('base.base')
 @section('title', 'Acceuil')
 @section('content')
     <main>

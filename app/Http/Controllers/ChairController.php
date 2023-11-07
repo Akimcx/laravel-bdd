@@ -20,8 +20,24 @@ class ChairController extends Controller
      */
     public function index(): View
     {
+        $chairs = DB::table('chairs')
+            ->join('profs', 'prof_id', '=', 'profs.id')
+            ->join('facs', 'fac_id', '=', 'facs.id');
+        // dd($chairs->get());
+        foreach (request()->query() as $key => $value) {
+            switch ($key) {
+                case "order_asc":
+                    $chairs = $chairs->orderBy($value);
+                    break;
+                case 'order_desc':
+                    $chairs = $chairs->orderByDesc($value);
+                    break;
+                default:
+                    break;
+            }
+        }
         return view("chairs.index", [
-            "chairs" => Chair::all()
+            "chairs" => $chairs->get()
         ]);
     }
 
@@ -62,10 +78,18 @@ class ChairController extends Controller
 
         $students = $chair->students();
         foreach (request()->query() as $key => $value) {
-            if ($key === "order_asc") {
-                $students = $students->orderBy($value);
-            } elseif ($key === 'order_desc') {
-                $students = $students->orderByDesc($value);
+            switch ($key) {
+                case "order_asc":
+                    $students = $students->orderBy($value);
+                    break;
+                case 'order_desc':
+                    $students = $students->orderByDesc($value);
+                    break;
+                    // case 'order_desc':
+                    //     $students = $students->orderByDesc($value);
+                    //     break;
+                default:
+                    break;
             }
         }
         // dump(Chair::paginate(10)->links());

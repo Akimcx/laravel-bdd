@@ -1,5 +1,8 @@
-@extends('base')
+@extends('base.base')
 @section('title', 'Chaire')
+@section('script')
+    @vite('resources/js/chair/show.js')
+@endsection
 @section('content')
     <main class="fill-white text-white">
         <div class="container mx-auto w-[95%]">
@@ -40,6 +43,9 @@
                     </div>
                 </form>
             </dialog>
+            <dialog id="filterDialog">
+
+            </dialog>
             <section class="flex gap-4 rounded bg-gray-800 p-2">
                 @include('chairs.shared.controls')
                 <button class="rounded p-1 dark:hover:bg-gray-500">
@@ -62,48 +68,114 @@
             </section>
             <section class="students mt-5">
                 @include('dashboard.shared.flash')
-                <small>
-                    Liste des participants: {{ $students->count() }}
-                    enregistrements</small>
-                <div>
-                    <div class="grid grid-cols-3 rounded bg-gray-800 p-1 text-center">
-                        <div class="flex cursor-pointer items-center gap-1">
-                            <p>Prénom</p>
-                            @include('chairs.shared.desc')
-                        </div>
-                        <div class="flex cursor-pointer items-center gap-1">
-                            <p>Nom</p>
-                            @include('chairs.shared.desc')
-                        </div>
-                        <div class="flex cursor-pointer items-center gap-1">
-                            <p>Présence</p>
-                            @include('chairs.shared.desc')
-                        </div>
-                    </div>
-                    <div class="">
-                        @foreach ($students as $student)
-                            <div class="grid grid-cols-3 even:rounded even:bg-gray-700">
-                                {{-- <input type="checkbox" name="students" value="<%= students[0].id %>" /> --}}
-                                <p class="p-2">{{ $student->first_name }}</p>
-                                <p class="p-2">{{ $student->last_name }}</p>
-                                <p class="p-2">{{ $student->presence }}</p>
-                            </div>
-                        @endforeach
-                    </div>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs uppercase dark:bg-gray-800 dark:text-slate-200">
+                            <tr>
+                                <th scope="col" class="py-3 pl-6">
+                                    <input type="checkbox" name="selectAll" id="selectAll">
+                                </th>
+                                <th scope="col" class="cursor-pointer px-3 py-3">
+                                    <div class="flex items-center gap-1">
+                                        Prénom
+                                        <div class="relative" x-data="{ open: false }">
+                                            <svg class="rounded px-1 dark:hover:bg-gray-500" @click="open = !open"
+                                                xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
+                                                <path
+                                                    d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+                                            </svg>
+                                            <div class="absolute left-0 w-48 origin-top-right rounded p-2 dark:bg-gray-700"
+                                                x-show="open" @click.outside="open = false">
+                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
+                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
+                                                    <input type="text" name="order_asc" value="first_name" hidden>
+                                                    <button class="w-full text-left">Trier A -> Z</button>
+                                                </form>
+                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
+                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
+                                                    <input type="text" name="order_desc" value="first_name" hidden>
+                                                    <button class="w-full text-left">Trier Z -> A</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="flex cursor-pointer px-3 py-3">
+                                    <div class="flex items-center gap-1">
+                                        Nom
+                                        <div class="relative" x-data="{ open: false }">
+                                            <svg class="rounded px-1 dark:hover:bg-gray-500" @click="open = !open"
+                                                xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
+                                                <path
+                                                    d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+                                            </svg>
+                                            <div class="absolute right-0 w-48 origin-top-left rounded p-2 dark:bg-gray-700"
+                                                x-show="open" @click.outside="open = false">
+                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
+                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
+                                                    <input type="text" name="order_asc" value="last_name" hidden>
+                                                    <button class="w-full text-left">Trier A -> Z</button>
+                                                </form>
+                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
+                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
+                                                    <input type="text" name="order_desc" value="last_name" hidden>
+                                                    <button class="w-full text-left">Trier Z -> A</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th scope="col" class="cursor-pointer gap-2 px-3 py-3">
+                                    <div class="flex items-center gap-1">
+                                        Présence
+                                        <div class="relative" x-data="{ open: false }">
+                                            <svg class="rounded dark:hover:bg-gray-500" @click="open = !open"
+                                                xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
+                                                <path
+                                                    d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+                                            </svg>
+                                            <div class="absolute right-0 top-5 w-48 origin-top-left rounded border p-2 shadow-md dark:border-gray-600 dark:bg-gray-700"
+                                                x-show="open" @click.outside="open = false">
+                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
+                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
+                                                    <input type="text" name="order_asc" value="presence" hidden>
+                                                    <button class="w-full text-left">Trier A -> Z</button>
+                                                </form>
+                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
+                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
+                                                    <input type="text" name="order_desc" value="presence" hidden>
+                                                    <button class="w-full text-left">Trier Z -> A</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y dark:divide-gray-500">
+                            @foreach ($students as $student)
+                                <tr class="group dark:bg-gray-700 dark:text-slate-200 dark:even:bg-gray-600">
+                                    <td @clicked scope="row" class="py-2 pl-6">
+                                        <input class="invisible block checked:visible group-hover:visible" type="checkbox"
+                                            name="student" id="{{ $student->id }}" value="{{ $student->id }}">
+                                    </td>
+                                    <td class="px-3 py-3">
+                                        {{ $student->first_name }}
+                                    </td>
+                                    <td class="px-3 py-3">
+                                        {{ $student->last_name }}
+                                    </td>
+                                    <td class="px-3 py-3">
+                                        {{ $student->presence }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </section>
+            {{ $chairs->links() }}
         </div>
     </main>
-    <script>
-        const addBtn = document.getElementById("add")
-        addBtn.addEventListener("click", e => {
-            const dialog = document.getElementById("addDialog")
-            dialog.showModal()
-        })
-        const modifyBtn = document.getElementById("modify")
-        modifyBtn.addEventListener("click", e => {
-            const dialog = document.getElementById("modifyDialog")
-            dialog.showModal()
-        })
-    </script>
 @endsection

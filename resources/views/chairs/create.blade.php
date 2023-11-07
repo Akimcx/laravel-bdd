@@ -1,8 +1,8 @@
-@extends('base')
+@extends('base.base')
 @section('title', 'Chaire')
 @section('content')
     <main>
-        <div class="container mx-auto flex w-[95%] items-center justify-center">
+        <div class="container mx-auto flex w-[95%] flex-col items-center justify-center">
             @if ($profs->isEmpty() || $facs->isEmpty())
                 @php
                     $title = $profs->isEmpty() ? 'professeurs' : 'facultés';
@@ -13,6 +13,14 @@
                     <a class="btn btn-primary" href="{{ $route }}">Ajouter</a>
                 </div>
             @else
+                <div class="mb-5 flex w-full gap-1 rounded p-3 dark:bg-gray-800">
+                    <a class="rounded p-1.5 dark:bg-gray-700 dark:text-slate-100 dark:hover:bg-gray-600"
+                        href="{{ route('dashboard.profs.create') }}">Ajouter un professeur
+                    </a>
+                    <a class="rounded p-1.5 dark:bg-gray-700 dark:text-slate-100 dark:hover:bg-gray-600"
+                        href="{{ route('dashboard.facs.create') }}">Ajouter une faculté
+                    </a>
+                </div>
                 @foreach ($errors->all() as $message)
                     <p>{{ $message }}</p>
                 @endforeach
@@ -20,7 +28,8 @@
                     @csrf
                     <div class="">
                         <label class="mb-2" for="prof">Professeur</label>
-                        <select class="w-full rounded bg-gray-800 p-2 text-slate-100 outline outline-2 outline-slate-300"
+                        <select
+                            class="w-full rounded p-2 outline outline-2 dark:bg-gray-800 dark:text-slate-100 dark:outline-slate-300"
                             name="prof_id" id="prof" required>
                             <option value="">Choisir</option>
                             @foreach ($profs as $prof)
