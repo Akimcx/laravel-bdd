@@ -29,6 +29,7 @@ Route::get('/', function () {
 
 Route::resource("internships", InternshipsController::class);
 Route::resource("interns", InternController::class);
+// Route::get("chairs/{chair}/{params?}", [ChairController::class, 'show'])->name("chairs.show");
 Route::resource("chairs", ChairController::class);
 Route::post('/students/{chair}', [StudentController::class, 'store'])->name('students.store');
 

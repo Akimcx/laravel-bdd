@@ -57,16 +57,21 @@ class ChairController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Chair $chair)
+    public function show(Chair $chair): View
     {
-        // dd(request()->query()["sort"] ?? "hello");
+
+        $students = $chair->students();
+        foreach (request()->query() as $key => $value) {
+            if ($key === "order_asc") {
+                $students = $students->orderBy($value);
+            } elseif ($key === 'order_desc') {
+                $students = $students->orderByDesc($value);
+            }
+        }
+        // dump(Chair::paginate(10)->links());
         return view("chairs.show", [
             "chair" => $chair,
-            "students" => $chair->students,
-            // "students" => DB::table('students')
-            //     ->where('chair_id', $chair->id)
-            //     ->orderBy('first_name', 'desc')
-            //     ->get(),
+            "students" => $students->get(),
             "chairs" => Chair::paginate(1),
         ]);
     }
@@ -74,9 +79,11 @@ class ChairController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Chair $chair)
+    public function edit(Chair $chair): View
     {
-        //
+        return view("chairs.edit", [
+            "chair" => $chair
+        ]);
     }
 
     /**

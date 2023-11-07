@@ -2,7 +2,7 @@
 @section('title', 'Chaires')
 @section('content')
     <main class="text-white">
-        <div class="container mx-auto mt-10 w-[95%]">
+        <div class="container mx-auto mt-5 w-[95%]">
             @if ($chairs->isEmpty())
                 <div class="flex items-center justify-center">
                     <div class="card flex max-w-md flex-col items-center gap-4">
@@ -14,8 +14,14 @@
                 <section id="content" class="">
                     <div class="wrapper">
                         <div class="flex gap-4 rounded bg-gray-800 p-1">
-                            <a class="btn btn-primary" href="{{ route('chairs.create') }}">Ajouter</a>
                             @auth
+                                <a class="btn btn-primary" href="{{ route('chairs.create') }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                                        viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                        <path
+                                            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                    </svg>
+                                </a>
                                 <form action="{{ route('chairs.create') }}" method="post">
                                     <button class="btn btn-primary">Supprimer</button>
                                 </form>
