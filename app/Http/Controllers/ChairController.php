@@ -24,7 +24,6 @@ class ChairController extends Controller
                 "chairs" => Chair::paginate(10)
             ]);
         }
-        // dd(Chair::orderByProf()->get()[0]->prof->name);
         foreach (request()->query() as $key => $value) {
             switch ($key) {
                 case "order_asc":

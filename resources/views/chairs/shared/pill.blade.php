@@ -10,7 +10,7 @@
             $name = $chair->vacation;
             break;
         case 'Date':
-            $name = $chair->dates;
+            $name = $chair->dates->locale('fr_FR')->toFormattedDateString();
             break;
         default:
             break;

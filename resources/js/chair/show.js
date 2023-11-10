@@ -1,5 +1,4 @@
 const selectAll = document.getElementById("selectAll");
-
 if (selectAll) {
     selectAll.addEventListener("input", (e) => {
         const students = document.querySelectorAll("input[name='student']");

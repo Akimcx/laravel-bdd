@@ -15,7 +15,22 @@
                 </div>
             @else
                 <section id="content" class="">
-                    <div class="flex gap-4 rounded bg-gray-800 p-1">
+                    <div class="flex items-center gap-4 rounded bg-gray-800 p-2">
+                        <div>
+                            <label for="searchItem" class="sr-only">Search</label>
+                            <div class="relative">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <svg class="h-4 w-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                    </svg>
+                                </div>
+                                <input type="text" id="searchItem"
+                                    class="block w-80 rounded-lg p-2 pl-10 text-sm dark:bg-gray-700 dark:outline dark:outline-2 dark:outline-gray-500 dark:focus:outline-gray-300"
+                                    placeholder="Search for items">
+                            </div>
+                        </div>
                         @auth
                             <a class="rounded p-1 dark:fill-slate-100 dark:hover:bg-gray-500"
                                 href="{{ route('chairs.create') }}">
@@ -50,7 +65,7 @@
                                                     value="{{ $chair->id }}">
                                             </td>
                                             <td x-data @click="$dispatch('{{ $chair->id }}')" class="px-3 py-3">
-                                                {{ $chair->dates }}
+                                                {{ $chair->dates->locale('fr_FR')->toFormattedDateString() }}
                                             </td>
                                             <td x-data @click="$dispatch('{{ $chair->id }}')" class="px-3 py-3">
                                                 {{ $chair->prof->name }}
@@ -70,6 +85,6 @@
                 </section>
             @endif
         </div>
-        {{ $chairs->links() }}
+        {{ $chairs->withQueryString()->links() }}
     </main>
 @endsection

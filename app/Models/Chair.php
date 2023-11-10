@@ -36,6 +36,16 @@ class Chair extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'dates' => 'date:Y-mm-d',
+    ];
+
+    /** @var array */
     protected $fillable = [
         "dates",
         "prof_id",
@@ -46,6 +56,7 @@ class Chair extends Model
     public function scopeOrderByField(Builder $query, string $table, string $direction = 'asc')
     {
         if ($table == "vacation" || $table == "dates") {
+            // $query->
             $query->orderBy($table, $direction);
             return;
         }

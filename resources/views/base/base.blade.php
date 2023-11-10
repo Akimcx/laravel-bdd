@@ -17,36 +17,34 @@
                 <img src="assets/cnmp.png" alt="Le Logo de la CNMP" /></a>
             <h1>@yield('title')</h1>
             @auth
-                <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <p class="h-7">
-                                <img class="h-full" src="{{ Auth::user()->profile }}" alt="Profile Picture">
-                            </p>
-                        </x-slot>
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <p class="h-7 cursor-pointer">
+                            <img class="h-full rounded-full outline outline-1" src="{{ Auth::user()->profile }}"
+                                alt="Profile Picture">
+                        </p>
+                    </x-slot>
 
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('home')">
-                                {{ __('Home') }}
-                            </x-dropdown-link>
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('home')">
+                            {{ __('Home') }}
+                        </x-dropdown-link>
 
-                            <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Profile') }}
+                        </x-dropdown-link>
 
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-
-                                <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
                                                             this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
+                    </x-slot>
+                </x-dropdown>
             @else
                 <div class="flex gap-2">
                     <a class="rounded p-1 dark:bg-gray-700" href="{{ route('login') }}">Login</a>

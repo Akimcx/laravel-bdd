@@ -38,7 +38,7 @@ Route::prefix("dashboard")->controller(DashboardController::class)
     ->name("dashboard.")->group(function () {
         Route::get('/', "index")->name("index");
 
-        Route::resource("students", StudentController::class)->except('store');
+        Route::resource("students", StudentController::class)->except("['store','edit']");
         Route::resource("profs", ProfController::class);
         Route::resource("facs", FacController::class);
         Route::get("profs/{prof}/restore", [ProfileController::class, 'restore'])->name("prof.restore");

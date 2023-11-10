@@ -44,7 +44,6 @@
                 </form>
             </dialog>
             <dialog id="filterDialog">
-
             </dialog>
             <section class="flex gap-4 rounded bg-gray-800 p-2">
                 @include('chairs.shared.controls')
@@ -58,7 +57,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
                         <path
                             d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z" />
-                    </svg></button>
+                    </svg>
+                </button>
             </section>
             <section class="mt-10 flex justify-between">
                 @include('chairs.shared.pill', ['label' => 'Professeur'])
@@ -69,88 +69,20 @@
             <section class="students mt-5">
                 @include('dashboard.shared.flash')
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    @if ($errors->any())
+                        @foreach ($errors->all() as $error)
+                            <p>{{ $error }}</p>
+                        @endforeach
+                    @endif
                     <table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
                         <thead class="text-xs uppercase dark:bg-gray-800 dark:text-slate-200">
                             <tr>
                                 <th scope="col" class="py-3 pl-6">
                                     <input type="checkbox" name="selectAll" id="selectAll">
                                 </th>
-                                <th scope="col" class="cursor-pointer px-3 py-3">
-                                    <div class="flex items-center gap-1">
-                                        Prénom
-                                        <div class="relative" x-data="{ open: false }">
-                                            <svg class="rounded px-1 dark:hover:bg-gray-500" @click="open = !open"
-                                                xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
-                                                <path
-                                                    d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
-                                            </svg>
-                                            <div class="absolute left-0 w-48 origin-top-right rounded p-2 dark:bg-gray-700"
-                                                x-show="open" @click.outside="open = false">
-                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
-                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
-                                                    <input type="text" name="order_asc" value="first_name" hidden>
-                                                    <button class="w-full text-left">Trier A -> Z</button>
-                                                </form>
-                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
-                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
-                                                    <input type="text" name="order_desc" value="first_name" hidden>
-                                                    <button class="w-full text-left">Trier Z -> A</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th scope="col" class="flex cursor-pointer px-3 py-3">
-                                    <div class="flex items-center gap-1">
-                                        Nom
-                                        <div class="relative" x-data="{ open: false }">
-                                            <svg class="rounded px-1 dark:hover:bg-gray-500" @click="open = !open"
-                                                xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
-                                                <path
-                                                    d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
-                                            </svg>
-                                            <div class="absolute right-0 w-48 origin-top-left rounded p-2 dark:bg-gray-700"
-                                                x-show="open" @click.outside="open = false">
-                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
-                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
-                                                    <input type="text" name="order_asc" value="last_name" hidden>
-                                                    <button class="w-full text-left">Trier A -> Z</button>
-                                                </form>
-                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
-                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
-                                                    <input type="text" name="order_desc" value="last_name" hidden>
-                                                    <button class="w-full text-left">Trier Z -> A</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th scope="col" class="cursor-pointer gap-2 px-3 py-3">
-                                    <div class="flex items-center gap-1">
-                                        Présence
-                                        <div class="relative" x-data="{ open: false }">
-                                            <svg class="rounded dark:hover:bg-gray-500" @click="open = !open"
-                                                xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512">
-                                                <path
-                                                    d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
-                                            </svg>
-                                            <div class="absolute right-0 top-5 w-48 origin-top-left rounded border p-2 shadow-md dark:border-gray-600 dark:bg-gray-700"
-                                                x-show="open" @click.outside="open = false">
-                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
-                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
-                                                    <input type="text" name="order_asc" value="presence" hidden>
-                                                    <button class="w-full text-left">Trier A -> Z</button>
-                                                </form>
-                                                <form class="rounded p-2 dark:hover:bg-gray-800" method="GET"
-                                                    action="{{ route('chairs.show', ['chair' => $chair]) }}">
-                                                    <input type="text" name="order_desc" value="presence" hidden>
-                                                    <button class="w-full text-left">Trier Z -> A</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </th>
+                                <x-table.thead sortBy="first_name" align="left" title="Prénom"></x-table.thead>
+                                <x-table.thead sortBy="last_name" title="Nom"></x-table.thead>
+                                <x-table.thead sortBy="presence" title="Présence"></x-table.thead>
                             </tr>
                         </thead>
                         <tbody class="divide-y dark:divide-gray-500">
@@ -163,11 +95,26 @@
                                     <td class="px-3 py-3">
                                         {{ $student->first_name }}
                                     </td>
-                                    <td class="px-3 py-3">
-                                        {{ $student->last_name }}
+                                    <td x-data="editCell" class="px-3 py-3">
+                                        <p x-bind="cell">
+                                            {{ $student->last_name }}
+                                        </p>
+                                        <form x-bind="form" method="post"
+                                            action="{{ route('dashboard.students.update', ['student' => $student]) }}">
+                                            @method('put')
+                                            @csrf
+                                            <input
+                                                class="rounded p-1 outline dark:bg-gray-600 dark:outline-1 dark:outline-gray-400"
+                                                type="text" name="" id=""
+                                                value="{{ $student->last_name }}">
+                                            <button>Modifier</button>
+                                        </form>
+                                        <p x-bind="cancel">Cancel</p>
                                     </td>
                                     <td class="px-3 py-3">
-                                        {{ $student->presence }}
+                                        <p>
+                                            {{ $student->presence }}
+                                        </p>
                                     </td>
                                 </tr>
                             @endforeach
