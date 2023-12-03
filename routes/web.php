@@ -1,14 +1,24 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FacController;
-use App\Http\Controllers\InternController;
-use App\Http\Controllers\InternshipsController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ChairController;
-use App\Http\Controllers\ProfController;
-use App\Http\Controllers\StudentController;
-use App\Models\Prof;
+use App\Livewire\CreateCourse;
+use App\Livewire\EditCourse;
+use App\Livewire\ShowCourses;
+use App\Livewire\CreateInstructor;
+use App\Livewire\CreateSchool;
+use App\Livewire\CreateSession;
+use App\Livewire\CreateStudent;
+use App\Livewire\ShowCourse;
+use App\Livewire\ShowInstructors;
+use App\Livewire\ShowSchool;
+use App\Livewire\ShowSchools;
+use App\Livewire\ShowSession;
+use App\Livewire\ShowSessions;
+use App\Livewire\ShowStudent;
+use App\Livewire\ShowStudents;
+use App\Models\Course;
+use App\Models\Instructor;
+use App\Models\School;
+use App\Models\Student;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,32 +32,62 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::view('/', 'welcome')->name('welcome');
 
-
-Route::resource("internships", InternshipsController::class);
-Route::resource("interns", InternController::class);
-// Route::get("chairs/{chair}/{params?}", [ChairController::class, 'show'])->name("chairs.show");
-Route::resource("chairs", ChairController::class);
-Route::post('/students/{chair}', [StudentController::class, 'store'])->name('students.store');
-
-Route::prefix("dashboard")->controller(DashboardController::class)
-    ->middleware(['auth'])
-    ->name("dashboard.")->group(function () {
-        Route::get('/', "index")->name("index");
-
-        Route::resource("students", StudentController::class)->except("['store','edit']");
-        Route::resource("profs", ProfController::class);
-        Route::resource("facs", FacController::class);
-        Route::get("profs/{prof}/restore", [ProfileController::class, 'restore'])->name("prof.restore");
-    });
-
-Route::middleware('auth')->name('profile.')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('destroy');
+Route::prefix('sessions')->name('sessions.')->group(function () {
+    Route::get('/', ShowSessions::class)
+        ->name('home');
+    Route::get('/create/{session?}', CreateSession::class)
+        ->name('create');
+    Route::get('/{session}', ShowSession::class)
+        ->name('show');
 });
+
+Route::prefix('courses')->name('courses.')->group(function () {
+    Route::get('/', ShowCourses::class)
+        ->name('home');
+    Route::get('/create/{course?}', CreateCourse::class)
+        ->name('create');
+    Route::get('/{course}', ShowCourse::class)
+        ->name('show');
+});
+
+Route::prefix('instructors')->name('instructors.')->group(function () {
+    Route::get('/create', CreateInstructor::class)
+        ->name('create');
+    Route::get('/', ShowInstructors::class)
+        ->name('home');
+});
+
+Route::prefix('schools')->name('schools.')->group(function () {
+    Route::get('/create', CreateSchool::class)
+        ->name('create');
+    Route::get('/', ShowSchools::class)
+        ->name('home');
+    Route::get('/{school}', ShowSchool::class)
+        ->name('show');
+});
+
+Route::prefix('students')->name('students.')->group(function () {
+    Route::get('/', ShowStudents::class)
+        ->name('home');
+    Route::get('/create', CreateStudent::class)
+        ->name('create');
+    Route::get('/{student}', ShowStudent::class)
+        ->name('show');
+});
+
+Route::view('dashboard', 'dashboard', [
+    'course_count' => Course::count(),
+    'instructor_count' => Instructor::count(),
+    'school_count' => School::count(),
+    'student_count' => Student::count(),
+])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
 
 require __DIR__ . '/auth.php';

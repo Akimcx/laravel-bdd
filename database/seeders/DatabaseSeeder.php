@@ -3,7 +3,13 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Course;
+use App\Models\Instructor;
+use App\Models\School;
+use Database\Factories\InstructorFactory;
 use Illuminate\Database\Seeder;
+use Nette\Utils\Random;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +18,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        $this->call([
-            ProfSeeder::class,
-            FacSeeder::class,
-        ]);
+        // School::factory()->create();
+        Course::factory(5)
+            ->has(Instructor::factory()->count(3))->create();
+        // Instructor::factory(5)->create();
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
