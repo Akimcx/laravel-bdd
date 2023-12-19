@@ -8,6 +8,7 @@ use App\Livewire\CreateSchool;
 use App\Livewire\CreateSession;
 use App\Livewire\CreateStudent;
 use App\Livewire\ShowCourse;
+use App\Livewire\ShowInstructor;
 use App\Livewire\ShowInstructors;
 use App\Livewire\ShowSchool;
 use App\Livewire\ShowSchools;
@@ -57,6 +58,8 @@ Route::prefix('instructors')->name('instructors.')->group(function () {
         ->name('create');
     Route::get('/', ShowInstructors::class)
         ->name('home');
+    Route::get('/{instructor}', ShowInstructor::class)
+        ->name('show');
 });
 
 Route::prefix('schools')->name('schools.')->group(function () {

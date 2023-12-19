@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -21,6 +22,17 @@ class School extends Model
         'url',
     ];
 
+
+    public function scopeWtoCourse(Builder $query, int $course_id): void
+    {
+        $query->doesntHave('courses')
+            ->orwhereNot(function ($query) use ($course_id) {
+                $query->whereHas('courses', function ($q) use ($course_id) {
+                    $q->where('course_id', $course_id);
+                });
+            });
+    }
+
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class);
@@ -34,5 +46,10 @@ class School extends Model
     public function students(): HasMany
     {
         return $this->hasMany(Student::class);
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
     }
 }

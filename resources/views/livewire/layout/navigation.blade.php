@@ -136,22 +136,28 @@ new class extends Component {
                     <div class="text-base font-medium text-gray-800 dark:text-gray-200" x-data="{ name: '{{ auth()->user()->name }}' }"
                         x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
                     <div class="text-sm font-medium text-gray-500">{{ auth()->user()->email }}</div>
-                @else
-                    <p>User->email</p>
                 @endauth
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile')" wire:navigate>
-                    {{ __('Profile') }}
+                <x-responsive-nav-link :href="route('welcome')" wire:navigate>
+                    {{ __('Acceuil') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('login')" wire:navigate>
+                    {{ __('Login') }}
+                </x-responsive-nav-link>
+                @auth
+                    <x-responsive-nav-link :href="route('profile')" wire:navigate>
+                        {{ __('Profile') }}
+                    </x-responsive-nav-link>
+                    <button wire:click="logout" class="w-full text-start">
+                        <x-responsive-nav-link>
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </button>
+                @endauth
 
                 <!-- Authentication -->
-                <button wire:click="logout" class="w-full text-start">
-                    <x-responsive-nav-link>
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </button>
             </div>
         </div>
     </div>

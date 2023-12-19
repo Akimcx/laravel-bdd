@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class Course extends Model
 {
@@ -40,5 +41,19 @@ class Course extends Model
     public function schools(): BelongsToMany
     {
         return $this->belongsToMany(School::class);
+    }
+
+    public function scopeForInstructors(Builder $builder, array|int $id): void
+    {
+        $builder->whereHas('instructors', function ($q) use ($id) {
+            is_array($id) ? $q->whereIn('instructor_id', $id) : $q->where('instructor_id', $id);
+        });
+    }
+
+    public function scopeForSchools(Builder $builder, array|int $id): void
+    {
+        $builder->whereHas('schools', function ($q) use ($id) {
+            is_array($id) ? $q->whereIn('school_id', $id) : $q->where('school_id', $id);
+        });
     }
 }

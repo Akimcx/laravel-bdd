@@ -19,5 +19,8 @@ class CourseSeeder extends Seeder
         DB::table('courses')->insert([
             'title' => "Introduction aux MP en droit",
         ]);
+        DB::table('courses')->insert([
+            'title' => "Droit des affaires",
+        ]);
     }
 }

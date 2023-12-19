@@ -27,7 +27,7 @@
     <main>
         <div class="container">
             @foreach (['Chaire'] as $item)
-                <a class="dark:text-slate-200" href="{{ route('courses.home') }}">{{ $item }}</a>
+                <a class="dark:text-slate-200" href="{{ route('sessions.home') }}">{{ $item }}</a>
             @endforeach
         </div>
     </main>

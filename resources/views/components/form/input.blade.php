@@ -1,5 +1,5 @@
-@props(['label', 'textarea' => false, 'name' => strtolower($label)])
-<div class="relative dark:bg-inherit dark:text-slate-200">
+@props(['label', 'textarea' => false, 'name' => strtolower($label), 'divClass' => ''])
+<div class="{{ $divClass }} relative dark:bg-inherit">
     <input
         {{ $attributes->merge(['class' => 'w-full peer rounded border bg-transparent p-2 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:placeholder:hidden']) }}
         placeholder="{{ $label }}" id="{{ $name }}" name="{{ $name }}" />

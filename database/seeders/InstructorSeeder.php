@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class InstructorSeeder extends Seeder
 {
@@ -12,6 +13,17 @@ class InstructorSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        // DB::table('instructors')->insert([
+        //     'first_name' => fake()->firstName(),
+        //     'last_name' => fake()->lastName(),
+        // ]);
+        // DB::table('instructors')->insert([
+        //     'first_name' => fake()->firstName(),
+        //     'last_name' => fake()->lastName(),
+        // ]);
+        // DB::table('instructors')->insert([
+        //     'first_name' => fake()->firstName(),
+        //     'last_name' => fake()->lastName(),
+        // ]);
     }
 }

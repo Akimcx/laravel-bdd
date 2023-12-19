@@ -21,7 +21,6 @@ class ShowCourses extends Component
     }
     public function render()
     {
-        // Course::withTrashed()->restore();
         return view('livewire.course')
             ->with(['courses' => Course::all()]);
     }

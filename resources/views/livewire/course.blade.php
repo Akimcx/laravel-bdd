@@ -11,35 +11,30 @@
         </section>
     @else
         <section>
-            <a href='{{ route('courses.create') }}'>Ajouter</a>
-            <form wire:confirm='pa vin fe kk la nn baz' wire:submit='remove'>
-                <button @disabled(sizeof($boxes) === 0)>Supprimer</button>
-            </form>
+            @auth
+                <a href='{{ route('courses.create') }}'>Ajouter</a>
+                <form wire:confirm='pa vin fe kk la nn baz' wire:submit='remove'>
+                    <button @disabled(sizeof($boxes) === 0)>Supprimer</button>
+                </form>
+            @endauth
         </section>
-        <section>
+        <section class="mt-4">
             <x-table>
-                <thead class="dark:bg-gray-700">
-                    <th><input x-on:click="$dispatch('boxes',{state: $el.checked})" type="checkbox"></th>
+                <x-table.thead class="dark:bg-gray-700">
                     <th>Titre</th>
-                    <th>Description</th>
                     <th>Nbr d'étudiants</th>
                     <th>Nbr de sessions</th>
-                </thead>
-                <tbody class="divide-y">
+                </x-table.thead>
+                <x-table.tbody class="divide-y">
                     @foreach ($courses as $course)
-                        <tr class="cursor-pointer dark:bg-gray-800 dark:even:bg-gray-700"
+                        <x-table.tr :value="$course->id" class="cursor-pointer dark:bg-gray-800 dark:even:bg-gray-700"
                             wire:click='show({{ $course->id }})' wire:key='{{ $course->id }}'>
-                            <td x-on:click='$event.stopPropagation()'>
-                                <input x-on:boxes.window='$el.checked = $event.detail.state' wire:model.lazy='boxes'
-                                    value="{{ $course->id }}" type="checkbox">
-                            </td>
                             <td>{{ $course->title }}</td>
-                            <td>{{ Str::words($course->description, 5) }}</td>
                             <td>{{ $course->students()->count() }}</td>
                             <td>{{ $course->sessions()->count() }}</td>
-                        </tr>
+                        </x-table.tr>
                     @endforeach
-                </tbody>
+                </x-table.tbody>
             </x-table>
         </section>
     @endif

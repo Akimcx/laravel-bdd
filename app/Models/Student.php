@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,13 +19,21 @@ class Student extends Model
         'school_id'
     ];
 
-    public function scopeInSchoolForCourse($query, $schoolId, $courseId): void
+    public function getNameAttribute(): string
     {
-        $query->whereHas('school', function ($q) use ($schoolId) {
-            $q->where('school_id', $schoolId);
-        })->whereHas('courses', function ($q) use ($courseId) {
-            $q->where('course_id', $courseId);
+        return $this->attributes['first_name'] . ' ' . strtoupper($this->attributes['last_name']);
+    }
+
+    public function scopeInCourses($query, $id): void
+    {
+        $query->whereHas('courses', function ($q) use ($id) {
+            $q->whereIn('course_id', is_numeric($id) ? [$id] : $id);
         });
+    }
+
+    public function scopeInSchools($query, $id): void
+    {
+        $query->whereIn('school_id', is_numeric($id) ? [$id] : $id);
     }
 
     public function courses(): BelongsToMany
@@ -34,7 +43,7 @@ class Student extends Model
 
     public function sessions(): BelongsToMany
     {
-        return $this->belongsToMany(Session::class)->withPivot('is_present');
+        return $this->belongsToMany(Session::class)->withPivot('is_present')->using(SessionStudent::class);
     }
 
     public function school(): BelongsTo

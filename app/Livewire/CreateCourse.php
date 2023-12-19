@@ -12,8 +12,8 @@ class CreateCourse extends Component
     public Course $course;
     public $title = '';
     public $description;
-    public $instructor = [];
-    public $school = [];
+    public $instructorProperty = [];
+    public $schoolProperty = [];
     function store(): void
     {
         $validated = $this->validate([
@@ -21,8 +21,8 @@ class CreateCourse extends Component
             'description' => 'nullable'
         ]);
         $course = Course::create($validated);
-        $course->instructors()->attach($this->instructor);
-        $course->schools()->attach($this->school);
+        $course->instructors()->attach($this->instructorProperty);
+        $course->schools()->attach($this->schoolProperty);
         session()->flash('success', $course->title . ' ajouté');
         $this->redirect(ShowCourses::class);
     }
@@ -43,9 +43,15 @@ class CreateCourse extends Component
 
     function mount()
     {
-        $this->course = request()->course ?? new Course();
-        $this->title = $this->course->title;
-        $this->description = $this->course->description;
+        if (request()->course) {
+            $this->course = request()->course;
+            $this->title = $this->course->title;
+            $this->description = $this->course->description;
+            $this->instructorProperty = $this->course->instructors;
+            $this->schoolProperty = $this->course->schools;
+        } else {
+            $this->course = new Course();
+        }
     }
     public function render()
     {

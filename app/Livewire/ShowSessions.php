@@ -7,6 +7,7 @@ use Livewire\Component;
 
 class ShowSessions extends Component
 {
+    public $boxes = [];
     public function show(int $id): void
     {
         $this->redirectRoute('sessions.show', $id);
@@ -14,7 +15,7 @@ class ShowSessions extends Component
     public function render()
     {
         return view('livewire.show-sessions')->with([
-            'sessions' => Session::all()
+            'sessions' => Session::latest()->paginate(10)->withQueryString()
         ]);
     }
 }

@@ -15,12 +15,12 @@
         </fieldset>
         <fieldset class="grid grid-cols-2 gap-4 rounded border bg-inherit p-3">
             <legend class="px-2">Cours et écoles</legend>
-            <x-form.select class="w-full" wire:model.blur='course' :disabled="$courses->isEmpty()" label="Cours">
+            <x-form.select class="w-full" wire:model.blur='course' multiple :disabled="$courses->isEmpty()" label="Cours">
                 @foreach ($courses as $course)
                     <option value="{{ $course->id }}">{{ $course->title }}</option>
                 @endforeach
             </x-form.select>
-            <x-form.select class="w-full" :disabled="$schools->isEmpty()" label="École">
+            <x-form.select class="w-full" multiple :disabled="$schools->isEmpty()" label="École">
                 @foreach ($schools as $school)
                     <option value="{{ $school->id }}">{{ $school->sigle }}</option>
                 @endforeach

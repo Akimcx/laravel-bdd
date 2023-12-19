@@ -1,26 +1,31 @@
 <div class="container dark:text-slate-200">
     <x-flash></x-flash>
-    <section>
-        <a href="{{ route('schools.create') }}">Ajouter une école</a>
+    <section class="mt-4">
+        @auth
+            <a href="{{ route('schools.create') }}">Ajouter une école</a>
+        @endauth
     </section>
-    <section>
+    <section class="mt-4">
         <x-table>
-            <thead>
-                <th><input type="checkbox"></th>
+            <x-table.thead>
                 <th>Sigle</th>
-                <th>Nom</th>
-                <th>Cours disponible</th>
-            </thead>
-            <tbody>
+                <th>Cours disponibles</th>
+                <th>Professeurs</th>
+                <th>Étudiants</th>
+                <th>Sessions</th>
+            </x-table.thead>
+            <x-table.tbody>
                 @foreach ($schools as $school)
-                    <tr class="cursor-pointer" wire:click='show({{ $school->id }})' wire:key='{{ $school->id }}'>
-                        <td><input type="checkbox"></td>
+                    <x-table.tr class="cursor-pointer" :value="$school->id" wire:click='show({{ $school->id }})'
+                        wire:key='{{ $school->id }}'>
                         <td>{{ $school->sigle }}</td>
-                        <td>{{ Str::words($school->name, 6) }}</td>
                         <td>{{ $school->courses->count() }}</td>
-                    </tr>
+                        <td>{{ $school->instructors->count() }}</td>
+                        <td>{{ $school->students->count() }}</td>
+                        <td>{{ $school->sessions()->count() }}</td>
+                    </x-table.tr>
                 @endforeach
-            </tbody>
+            </x-table.tbody>
         </x-table>
     </section>
 </div>

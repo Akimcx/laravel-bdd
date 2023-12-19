@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Course;
+use App\Models\Instructor;
 use App\Models\School;
 use App\Models\Student;
 use Illuminate\Database\Migrations\Migration;
@@ -18,9 +19,10 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Course::class)->constrained()->cascadeOnUpdate();
+            $table->foreignIdFor(Instructor::class)->constrained()->cascadeOnUpdate();
             // $table->foreignIdFor(Student::class)->constrained()->cascadeOnUpdate();
             $table->foreignIdFor(School::class)->constrained()->cascadeOnUpdate();
-            $table->date('session_date')->default(DB::raw('CURRENT_DATE'));
+            $table->date('session_date')->useCurrent();
             // $table->boolean('is_present')->default(false);
             $table->softDeletes();
             $table->timestamps();

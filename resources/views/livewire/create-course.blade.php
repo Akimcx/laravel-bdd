@@ -7,15 +7,15 @@
         <x-form.textarea class="w-full" wire:model.blur='description' label="Description"></x-form.textarea>
         <div class="grid grid-cols-2 gap-4 bg-inherit">
             <x-form.select class="w-full" multiple wire:model.blur='instructor' :disabled="$instructors->isEmpty()" label="Professeurs">
-                @foreach ($instructors as $instructor)
-                    <option selected="{{ $course->instructors->contains($instructor) }}" value="{{ $instructor->id }}">
-                        {{ $instructor->first_name }} {{ strtoupper($instructor->last_name) }}
+                @foreach ($instructors as $tor)
+                    <option @selected($course->instructors->contains($tor)) value="{{ $tor->id }}">
+                        {{ $tor->first_name }} {{ strtoupper($tor->last_name) }}
                     </option>
                 @endforeach
             </x-form.select>
             <x-form.select class="w-full" multiple wire:model.blur='school' :disabled="$schools->isEmpty()" label="École">
                 @foreach ($schools as $school)
-                    <option selected="{{ $course->schools->contains($school) }}" value="{{ $school->id }}">
+                    <option @selected($course->schools->contains($school)) value="{{ $school->id }}">
                         {{ $school->sigle }}
                     </option>
                 @endforeach

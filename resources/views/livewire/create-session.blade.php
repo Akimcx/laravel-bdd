@@ -17,13 +17,14 @@
             </x-form.select>
             <a href="{{ route('courses.create') }}">Ajouter une école</a>
         </div>
-        <x-form.select label="Professeur">
-            @foreach ($schools as $school)
+        <x-form.select wire:model='instructor_id' label="Professeur">
+            @foreach ($instructors as $instructor)
+                <option value="{{ $instructor->id }}">{{ $instructor->name }}</option>
             @endforeach
         </x-form.select>
         <x-form.select multiple disabled label='Étudiants'>
             @foreach ($students as $student)
-                <option selected value="{{ $student->id }}">{{ $student->first_name }}</option>
+                <option selected value="{{ $student->id }}">{{ $student->name }}</option>
             @endforeach
         </x-form.select>
         <button class="rounded border p-2">Ajouter</button>

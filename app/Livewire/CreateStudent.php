@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Events\StudentCreatedEvent;
+use App\Listeners\StudentCreatedListener;
 use App\Models\Course;
 use App\Models\School;
 use App\Models\Student;
@@ -13,7 +15,8 @@ class CreateStudent extends Component
     public $last_name = '';
     public $school_id = '';
 
-    public $course = [];
+    public $courseModel = [];
+    public $courses = [];
 
     public function store(): void
     {
@@ -23,15 +26,20 @@ class CreateStudent extends Component
             'school_id' => 'required',
         ]);
         $student = Student::create($validated);
-        $student->courses()->attach($this->course);
+        $student->courses()->attach($this->courseModel);
         session()->flash('success', 'Étudiant ajouter');
+        event(new StudentCreatedEvent($student));
         $this->redirect('/students');
-        // dd($validated);
+    }
+    public function updatedSchoolId(int $id): void
+    {
+        $this->courses = Course::with(['schools'])->whereHas('schools', function ($q) use ($id) {
+            $q->where('school_id', $id);
+        })->get();
     }
     public function render()
     {
         return view('livewire.create-student')->with([
-            'courses' => Course::all(),
             'schools' => School::all()
         ]);
     }

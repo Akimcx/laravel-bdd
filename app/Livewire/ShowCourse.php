@@ -3,38 +3,57 @@
 namespace App\Livewire;
 
 use App\Models\Course;
+use App\Models\Instructor;
+use App\Models\School;
 use App\Models\Student;
 use Livewire\Component;
 
 class ShowCourse extends Component
 {
     public Course $course;
-    public $student = [];
+    public $studentProperty = [];
+    public $schoolProperty = [];
+    public $instructorProperty = [];
 
     public function edit(): void
     {
         $this->redirectRoute('courses.create', $this->course->id, navigate: true);
     }
-    public function attach(): void
+
+    public function atcInstructor(): void
     {
-        $this->course->students()->attach($this->student);
-        $this->reset(['student']);
+        $this->course->instructors()->attach($this->instructorProperty);
+        $this->reset(['instructorProperty']);
+    }
+
+    public function atcSchool(): void
+    {
+        $this->course->schools()->attach($this->schoolProperty);
+        $this->reset(['schoolProperty']);
+    }
+    public function atcStudent(): void
+    {
+        $this->course->students()->attach($this->studentProperty);
+        $this->reset(['studentProperty']);
     }
     public function detach(): void
     {
-        $this->course->students()->detach($this->student);
+        $this->course->students()->detach($this->studentProperty);
     }
 
     public function render()
     {
-
         return view('livewire.show-course')->with([
-            'students' => $this->course->students()->get(),
-            'as' => Student::whereDoesntHave('courses', function ($q) {
-                $q->where('course_id', $this->course->id);
-            })->whereHas('school', function ($q) {
-                $q->whereIn('school_id', $this->course->schools->pluck('id'));
-            })->get()
+            'students' => $this->course->students()->paginate(5)->withQueryString(),
+            'schools' => School::wtoCourse($this->course->id)->get(),
+            'instructors' => Instructor::inSchools($this->course->schools->pluck('id'))
+                ->whereNot(function ($query) {
+                    $query->inCourses($this->course->id);
+                })->get(),
+            'as' => Student::inSchools($this->course->schools->pluck('id'))
+                ->whereNot(function ($query) {
+                    $query->inCourses($this->course->id);
+                })->get()
         ]);
     }
 }

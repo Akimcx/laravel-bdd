@@ -24,7 +24,7 @@ new #[Layout('layouts.guest')] class extends Component {
     }
 }; ?>
 
-<div>
+<div class="dark:text-slate-200">
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -32,22 +32,12 @@ new #[Layout('layouts.guest')] class extends Component {
         <!-- Email Address -->
         <div class="bg-inherit">
             <x-form.input class="w-full" autofocus wire:model="form.email" :label="__('Email')"></x-form.input>
-            {{-- <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="form.email" id="email" class="mt-1 block w-full" type="email" name="email"
-                required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" /> --}}
         </div>
 
         <!-- Password -->
         <div class="mt-4 bg-inherit">
             <x-form.input class="w-full" autofocus wire:model="form.password" type="password"
                 :label="__('Password')"></x-form.input>
-            {{-- <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input wire:model="form.password" id="password" class="mt-1 block w-full" type="password" name="password"
-                required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" /> --}}
         </div>
 
         <!-- Remember Me -->

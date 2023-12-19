@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Instructor;
 use App\Models\Session;
 use App\Models\Student;
 use Illuminate\Database\Migrations\Migration;

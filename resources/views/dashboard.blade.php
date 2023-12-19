@@ -10,10 +10,18 @@
             <div class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     {{ __("You're logged in!") }}
-                    <p>Cours: {{ $course_count }}</p>
-                    <p>Professeurs: {{ $instructor_count }}</p>
-                    <p>Écoles: {{ $school_count }}</p>
-                    <p>Étudiants: {{ $student_count }}</p>
+                    <p>
+                        <a href="{{ route('courses.home') }}">Cours: {{ $course_count }}</a>
+                    </p>
+                    <p>
+                        <a href="{{ route('students.home') }}">Étudiants: {{ $student_count }}</a>
+                    </p>
+                    <p>
+                        <a href="{{ route('schools.home') }}">Écoles: {{ $school_count }}</a>
+                    </p>
+                    <p>
+                        <a href="{{ route('instructors.home') }}">Professeurs: {{ $instructor_count }}</a>
+                    </p>
                 </div>
             </div>
         </div>
