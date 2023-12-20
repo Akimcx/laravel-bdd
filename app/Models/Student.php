@@ -24,7 +24,7 @@ class Student extends Model
         return $this->attributes['first_name'] . ' ' . strtoupper($this->attributes['last_name']);
     }
 
-    public function scopeCourses($query, $id): void
+    public function scopeInCourses($query, $id): void
     {
         $query->whereHas('courses', function ($q) use ($id) {
             $q->whereIn('course_id', is_numeric($id) ? [$id] : $id);

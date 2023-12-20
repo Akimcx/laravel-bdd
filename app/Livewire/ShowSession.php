@@ -5,24 +5,27 @@ namespace App\Livewire;
 use App\Models\Session;
 use App\Models\Student;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Rule;
+use Livewire\Attributes\Url;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class ShowSession extends Component
 {
     public Session $session;
-
     public $presentBoxes = [];
+    #[Url(as: 'present')]
+    public $presentProperty;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $first_name;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public $last_name;
+
+    public $boxes = [];
 
     public function addStudent(): void
     {
-        // dd($this->validateOnly('fnameProperty', 'lnameProperty'));
         $this->validateOnly('first_name');
         $this->validateOnly('last_name');
         $student = Student::create([
@@ -39,20 +42,9 @@ class ShowSession extends Component
 
     public function delete(): void
     {
-        // foreach ($this->boxes as $box) {
-        $this->session->students()->detach($this->boxes);
-        // }
-    }
-
-    #[On('student-created')]
-    public function belongs2Sessions($id): void
-    {
-        $student = Student::find($id);
-        dump($student);
-        if ($student->school_id === $this->session->school->id && $student->courses->contains($this->session->course)); {
-            $this->session->students()->attach($student);
+        if ($this->boxes) {
+            $this->session->students()->detach($this->boxes);
         }
-        session()->flash('success', 'L\'étudiant ' . $student->name . ' a ete ajouter a ce cours');
     }
 
     public function toggleStudentPresence($id): void
@@ -63,9 +55,13 @@ class ShowSession extends Component
         ]);
     }
 
+    public function rset(...$properties): void
+    {
+        $this->reset($properties);
+    }
+
     public function mount(): void
     {
-        // dump($this->session->students);
         foreach ($this->session->students as $student) {
             if ($student->pivot->is_present) {
                 array_push($this->presentBoxes, $student->id);
@@ -75,6 +71,12 @@ class ShowSession extends Component
 
     public function render()
     {
-        return view('livewire.show-session');
+        // dd($this->session->students()->where('pivot_is_present', 0)->get());
+        return view('livewire.show-session')->with([
+            'students' => $this->session->students()
+                ->when($this->presentProperty !== null, function ($q) {
+                    $q->where('pivot_is_present', $this->presentProperty);
+                })->get()
+        ]);
     }
 }

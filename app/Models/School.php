@@ -33,6 +33,13 @@ class School extends Model
             });
     }
 
+    public function scopeWithInstructors(Builder $query, $id): void
+    {
+        $query->whereHas('instructors', function ($q) use ($id) {
+            is_numeric($id) ? $q->where('instructor_id', $id) :  $q->whereIn('instructor_id', $id);
+        });
+    }
+
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class);

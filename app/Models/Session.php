@@ -44,7 +44,7 @@ class Session extends Model
         return $this->belongsToMany(Student::class)->withPivot('is_present')->using(SessionStudent::class);
     }
 
-    public function scopeInSchools(Builder $query, $id): void
+    public function scopeSchools(Builder $query, $id): void
     {
         if (is_numeric($id)) {
             $query->where('school_id', $id);
@@ -52,14 +52,20 @@ class Session extends Model
             $query->whereIn('school_id', $id);
         }
     }
-    public function scopeInCourses(Builder $query, $id): void
+    public function scopeCourses(Builder $query, $id): void
     {
-        $query->whereHas('course', function ($q) use ($id) {
-            if (is_numeric($id)) {
-                $q->where('course_id', $id);
-            } else {
-                $q->whereIn('course_id', $id);
-            }
-        });
+        if (is_numeric($id)) {
+            $query->where('course_id', $id);
+        } else {
+            $query->whereIn('course_id', $id);
+        }
+    }
+    public function scopeInstructors(Builder $query, $id): void
+    {
+        if (is_numeric($id)) {
+            $query->where('instructor_id', $id);
+        } else {
+            $query->whereIn('instructor_id', $id);
+        }
     }
 }

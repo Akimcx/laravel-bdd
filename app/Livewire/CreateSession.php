@@ -4,20 +4,24 @@ namespace App\Livewire;
 
 use App\Models\Course;
 use App\Models\Instructor;
-use App\Models\School;
 use App\Models\Session;
 use App\Models\Student;
-use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-use function PHPUnit\Framework\isNull;
 
 class CreateSession extends Component
 {
-    public $course_id = '';
-    public $school_id = '';
-    public $instructor_id = '';
+    #[Validate('required|exists:courses,id')]
+    public $course_id;
 
+    #[Validate('required|exists:schools,id')]
+    public $school_id;
+
+    #[Validate('required|exists:instructors,id')]
+    public $instructor_id;
+
+    #[Validate('nullable|date')]
     public $session_date;
 
     /**
@@ -33,39 +37,38 @@ class CreateSession extends Component
 
 
 
-    function updatedCourseId(int $value): void
+    function updatedCourseId($value): void
     {
-        $this->schools = !is_null($value) ? Course::find($value)->schools : [];
-        $this->instructors = !is_null($value) ? Instructor::whereHas('courses', function ($q) use ($value) {
-            $q->where('course_id', $value);
-        })->get() : [];
+        if ($value === "") {
+            $this->reset('school_id', 'instructor_id', 'schools', 'instructors', 'students');
+            return;
+        }
+        $this->schools = Course::find($value)->schools;
         if (is_null($this->school_id) || is_null($this->course_id)) return;
-        $this->students = Student::inSchoolForCourse($this->school_id, $this->course_id)->get();
+        $this->students = Student::schools($this->school_id)->Incourses($this->course_id)->get();
     }
 
     function updatedSchoolId(): void
     {
         if (is_null($this->school_id) || is_null($this->course_id)) return;
-        $this->students = Student::inSchoolForCourse($this->school_id, $this->course_id)->get();
+        $this->students = Student::schools($this->school_id)->Incourses($this->course_id)->get();
+        $this->instructors = Instructor::inSchools($this->school_id)->inCourses($this->course_id)->get();
     }
 
-    function store(): void
+    function store($redirect = false): void
     {
-        $validated = $this->validate([
-            'course_id' => 'required|integer',
-            'school_id' => 'required|integer',
-            'instructor_id' => 'required|integer',
-            'session_date' => 'sometimes|nullable|date',
-        ]);
+        $validated = $this->validate();
         if (!$this->session_date) {
             unset($validated['session_date']);
-            // dd($validated);
         }
-        $students = Student::inSchoolForCourse($this->school_id, $this->course_id)->get();
+        $students = Student::schools($this->school_id)->Incourses($this->course_id)->get();
         $session = Session::create($validated);
         $session->students()->attach($students);
         session()->flash('success', 'Sessions creer avec succes');
-        $this->redirectRoute('sessions.home');
+        if ($redirect) {
+            $this->redirectRoute('sessions.home');
+        }
+        $this->reset('session_date', 'course_id', 'school_id', 'instructor_id', 'schools', 'instructors', 'students');
     }
     public function render()
     {

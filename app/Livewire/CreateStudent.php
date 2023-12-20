@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Events\StudentCreatedEvent;
-use App\Listeners\StudentCreatedListener;
 use App\Models\Course;
 use App\Models\School;
 use App\Models\Student;
@@ -18,7 +17,7 @@ class CreateStudent extends Component
     public $courseModel = [];
     public $courses = [];
 
-    public function store(): void
+    public function store($redirect = false): void
     {
         $validated = $this->validate([
             'first_name' => 'required',
@@ -29,7 +28,9 @@ class CreateStudent extends Component
         $student->courses()->attach($this->courseModel);
         session()->flash('success', 'Étudiant ajouter');
         event(new StudentCreatedEvent($student));
-        $this->redirect('/students');
+        if ($redirect) {
+            $this->redirect('/students');
+        }
     }
     public function updatedSchoolId(int $id): void
     {
