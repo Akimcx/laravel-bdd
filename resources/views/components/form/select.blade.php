@@ -3,7 +3,6 @@
     <select
         {{ $attributes->merge(['class' => 'w-full peer rounded border p-2 bg-inherit py-4 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:placeholder:hidden dark:focus-visible:outline-slate-200']) }}
         placeholder="{{ $label }}" id="{{ $name }}" name="{{ $name }}">
-        <option value="">-- Choisir --</option>
         {{ $slot }}
     </select>
     <label
