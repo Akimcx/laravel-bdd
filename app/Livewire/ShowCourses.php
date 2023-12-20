@@ -3,25 +3,39 @@
 namespace App\Livewire;
 
 use App\Models\Course;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class ShowCourses extends Component
 {
     public $boxes = [];
 
+    #[Url(as: 'ss')]
+    public $schoolsProperty = [];
+    #[Url(as: 'ps')]
+    public $instructorsProperty = [];
+
     public function remove(): void
     {
-        // dd($this->boxes);
         $courses = Course::destroy($this->boxes);
         session()->flash('success', $courses . ' supprimer avec success');
     }
-    function show(int $id): void
+    public function show(int $id): void
     {
         $this->redirectRoute('courses.show', $id, navigate: true);
     }
+    public function rset(...$properties): void
+    {
+        $this->reset($properties);
+    }
     public function render()
     {
-        return view('livewire.course')
-            ->with(['courses' => Course::all()]);
+        return view('livewire.course')->with([
+            'courses' => Course::when($this->schoolsProperty, function ($q) {
+                $q->schools($this->schoolsProperty);
+            })->when($this->instructorsProperty, function ($q) {
+                $q->instructors($this->instructorsProperty);
+            })->get()
+        ]);
     }
 }
