@@ -50,9 +50,9 @@ class ShowCourse extends Component
                 ->whereNot(function ($query) {
                     $query->inCourses($this->course->id);
                 })->get(),
-            'as' => Student::inSchools($this->course->schools->pluck('id'))
+            'as' => Student::schools($this->course->schools->pluck('id'))
                 ->whereNot(function ($query) {
-                    $query->inCourses($this->course->id);
+                    $query->courses($this->course->id);
                 })->get()
         ]);
     }

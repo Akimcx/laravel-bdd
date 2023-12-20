@@ -24,14 +24,14 @@ class Student extends Model
         return $this->attributes['first_name'] . ' ' . strtoupper($this->attributes['last_name']);
     }
 
-    public function scopeInCourses($query, $id): void
+    public function scopeCourses($query, $id): void
     {
         $query->whereHas('courses', function ($q) use ($id) {
             $q->whereIn('course_id', is_numeric($id) ? [$id] : $id);
         });
     }
 
-    public function scopeInSchools($query, $id): void
+    public function scopeSchools($query, $id): void
     {
         $query->whereIn('school_id', is_numeric($id) ? [$id] : $id);
     }

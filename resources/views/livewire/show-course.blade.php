@@ -3,26 +3,30 @@
     @auth
         <section class="mt-4 grid grid-cols-2 gap-4">
             @if (!$instructors->isEmpty())
-                <form class="dark:bg-gray-900" wire:submit='atcInstructor'>
+                <x-form class="grid gap-4" wire:submit='atcInstructor'>
                     <x-form.select multiple wire:model='instructorProperty' label='Ajouter un professeur'>
                         @foreach ($instructors as $instructor)
                             <option value="{{ $instructor->id }}">{{ $instructor->name }}
                             </option>
                         @endforeach
                     </x-form.select>
-                    <button>Ajouter</button>
-                </form>
+                    <div>
+                        <x-primary-button>Ajouter</x-primary-button>
+                    </div>
+                </x-form>
             @endif
-            <form class="dark:bg-gray-900" wire:submit='atcSchool'>
+            <x-form class="grid gap-4" wire:submit='atcSchool'>
                 <x-form.select multiple wire:model='schoolProperty' label='Ajouter une école'>
                     @foreach ($schools as $scholl)
                         <option value="{{ $scholl->id }}">{{ $scholl->sigle }}</option>
                     @endforeach
                 </x-form.select>
-                <button>Ajouter</button>
-            </form>
+                <div>
+                    <x-primary-button>Ajouter</x-primary-button>
+                </div>
+            </x-form>
             @if (!$as->isEmpty())
-                <form class="dark:bg-gray-900" wire:submit='atcStudent'>
+                <x-form wire:submit='atcStudent'>
                     <x-form.select wire:model='studentProperty' multiple label='Ajouter un étudiant'>
                         @foreach ($as as $a)
                             <option value="{{ $a->id }}">
@@ -30,13 +34,13 @@
                             </option>
                         @endforeach
                     </x-form.select>
-                    <button>Ajouter</button>
-                </form>
+                    <x-primary-button>Ajouter</x-primary-button>
+                </x-form>
             @endif
-            <form wire:submit='edit'>
-                <button>Modifier</button>
-            </form>
         </section>
+        <x-secondary-button>
+            <a href="{{ route('courses.create', ['course' => $course->id]) }}">Modifier</a>
+        </x-secondary-button>
     @endauth
 
     <div class="flex gap-2">
