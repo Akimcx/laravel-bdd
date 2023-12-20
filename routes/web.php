@@ -1,7 +1,6 @@
 <?php
 
 use App\Livewire\CreateCourse;
-use App\Livewire\EditCourse;
 use App\Livewire\ShowCourses;
 use App\Livewire\CreateInstructor;
 use App\Livewire\CreateSchool;

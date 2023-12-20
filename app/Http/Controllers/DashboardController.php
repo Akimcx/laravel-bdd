@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Fac;
 use App\Models\Prof;
 use Illuminate\Http\Request;
-use Illuminate\View\View as ViewView;
-use View;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    function index(): ViewView
+    function index(): View
     {
         return view("dashboard.index");
     }

@@ -4,6 +4,7 @@
         <x-form.input class="w-full" wire:model.blur='first_name' name='first_name' label='Prénom'></x-form.input>
         <x-form.input class="w-full" wire:model.blur='last_name' name='last_name' label='Nom'></x-form.input>
         <x-form.select class="w-full" :disabled="$schools->isEmpty()" wire:model.change='school_id' name='school_id' label='Écoles'>
+            <option value="">Choisir</option>
             @foreach ($schools as $school)
                 <option value="{{ $school->id }}">{{ $school->sigle }}</option>
             @endforeach
@@ -13,6 +14,10 @@
                 <option value="{{ $course->id }}">{{ $course->title }}</option>
             @endforeach
         </x-form.select>
-        <button class="col-span-2 rounded border p-2 dark:bg-gray-800">Ajouter</button>
+        <div class="col-span-2">
+            <x-primary-button class="">Ajouter</x-primary-button>
+            <x-secondary-button>Ajouter & Fermer</x-secondary-button>
+            <x-secondary-button><a href="{{ route('students.home') }}">Fermer</a></x-secondary-button>
+        </div>
     </form>
 </div>
