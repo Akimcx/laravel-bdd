@@ -2,33 +2,37 @@
     <x-flash></x-flash>
     <section class="mt-4 grid grid-cols-2 gap-4">
         @auth
-            <form class="rounded border p-4 dark:bg-gray-950" wire:submit='attachInstructor'>
+            <x-form class="grid gap-4" wire:submit='attachInstructor'>
                 <x-form.select wire:model='atci' name='atci' label='Affecter un professeurs' multiple>
                     @foreach ($instructors as $instructor)
                         <option value="{{ $instructor->id }}">{{ $instructor->name }}</option>
                     @endforeach
                 </x-form.select>
-                <button>Ajouter</button>
-            </form>
+                <div>
+                    <x-primary-button>Ajouter</x-primary-button>
+                </div>
+            </x-form>
             @if (!$un_courses->isEmpty())
-                <form class="rounded border p-4 dark:bg-gray-950" wire:submit='attachCourse'>
+                <x-form wire:submit='attachCourse'>
                     <x-form.select multiple wire:model.blur='atc' name='atc' label='Ajouter un cours'>
                         @foreach ($un_courses as $un_course)
                             <option value="{{ $un_course->id }}">{{ $un_course->title }}</option>
                         @endforeach
                     </x-form.select>
-                    <button>Ajouter</button>
-                </form>
+                    <x-primary-button>Ajouter</x-primary-button>
+                </x-form>
             @endif
             @if (!$school->courses->isEmpty())
-                <form class="rounded border p-4 dark:bg-gray-950" wire:submit='detachCourse'>
+                <x-form class="grid gap-4" wire:submit='detachCourse'>
                     <x-form.select multiple wire:model.blur='dtc' name='dtc' label='Supprimer un cours'>
                         @foreach ($school->courses as $course)
                             <option value="{{ $course->id }}">{{ $course->title }}</option>
                         @endforeach
                     </x-form.select>
-                    <button>Supprimer</button>
-                </form>
+                    <div>
+                        <x-primary-button>Supprimer</x-primary-button>
+                    </div>
+                </x-form>
             @endif
         @endauth
     </section>
@@ -40,7 +44,10 @@
                 <summary>Cours disponible</summary>
                 <ul>
                     @foreach ($school->courses as $course)
-                        <li>{{ $course->title }}</li>
+                        <li>
+                            <a class="hover:underline"
+                                href="{{ route('courses.show', ['course' => $course->id]) }}">{{ $course->title }}</a>
+                        </li>
                     @endforeach
                 </ul>
             </details>

@@ -40,15 +40,21 @@ class ShowSessions extends Component
     {
         return view('livewire.show-sessions')->with([
             'sessions' => Session::with('school', 'course', 'instructor')
-                ->when($this->schoolsProperty, function ($q) {
-                    $q->schools($this->schoolsProperty);
-                })
-                ->when($this->coursesProperty, function ($q) {
-                    $q->courses($this->coursesProperty);
-                })
-                ->when($this->instructorsProperty, function ($q) {
-                    $q->instructors($this->instructorsProperty);
-                })
+                ->when(
+                    $this->schoolsProperty,
+                    fn ($q) =>
+                    $q->schools($this->schoolsProperty)
+                )
+                ->when(
+                    $this->coursesProperty,
+                    fn ($q) =>
+                    $q->courses($this->coursesProperty)
+                )
+                ->when(
+                    $this->instructorsProperty,
+                    fn ($q) =>
+                    $q->instructors($this->instructorsProperty)
+                )
                 ->latest()
                 ->paginate(10)
                 ->withQueryString()
