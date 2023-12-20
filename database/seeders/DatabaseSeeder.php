@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Course;
 use App\Models\Instructor;
 use App\Models\School;
+use App\Models\User;
 use Database\Factories\InstructorFactory;
 use Illuminate\Database\Seeder;
 use Nette\Utils\Random;
@@ -20,9 +21,20 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SchoolSeeder::class,
-            // InstructorSeeder::class,
+            InstructorSeeder::class,
             CourseSeeder::class,
         ]);
+        User::factory()->create();
+        // $profs = Instructor::all();
+        // $schools = School::all();
+        // foreach ($schools as $key => $school) {
+        //     $school->instructors()->attach($profs[$key]);
+        // }
+        // $courses = Course::all();
+        // foreach ($courses as $key => $course) {
+        //     $course->schools()->attach($schools[$key]);
+        //     $course->instructors()->attach($profs[$key]);
+        // }
         // Instructor::factory(5)->create();
         // School::factory()->create();
         // Course::factory(5)

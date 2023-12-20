@@ -25,5 +25,21 @@ class SchoolSeeder extends Seeder
             'name' => "Institut National d'Administration, de Gestion et des Hautes Études Internationales",
             'sigle' => 'INAGHEI',
         ]);
+        DB::table('schools')->insert([
+            'name' => "Campus Henry CHRISTOPHE de Limonade",
+            'sigle' => 'CHCL',
+        ]);
+        DB::table('schools')->insert([
+            'name' => "Faculté de Droit des Sciences Economiques et de Gestion",
+            'sigle' => 'FDSEG',
+        ]);
+        DB::table('schools')->insert([
+            'name' => "Faculté d'Agronomie et de Médecine Vétérinaire",
+            'sigle' => 'FAMV',
+        ]);
+        DB::table('schools')->insert([
+            'name' => "Université Publique du Sud : Faculté des Sciences Juridiques",
+            'sigle' => 'UPS/FSJ',
+        ]);
     }
 }
