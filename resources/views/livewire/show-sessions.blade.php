@@ -1,13 +1,13 @@
 <div class="container dark:text-slate-200">
     <x-flash></x-flash>
-    <section class="mt-4 flex items-center gap-4 rounded p-2 dark:bg-gray-950 dark:fill-slate-200">
+    <x-toolbar>
         @auth
-            <a href="{{ route('sessions.create') }}">
+            <a class="relative rounded p-1 dark:hover:bg-gray-700" href="{{ route('sessions.create') }}">
                 <x-icon.sign-plus wire:click=''></x-icon.sign-plus>
             </a>
         @endauth
         <x-icon.print x-cloak x-show="false" :disabled="true" wire:click='print'></x-icon.print>
-        <div class="relative" x-data="{ open: false }">
+        <div class="relative rounded p-1 dark:hover:bg-gray-700" x-data="{ open: false }">
             <x-icon.filter x-on:click="open = !open"></x-icon.filter>
             <div class="absolute rounded border p-4 dark:bg-gray-950" x-cloak x-show="open"
                 x-on:click.outside="open = false">
@@ -62,7 +62,7 @@
                 </fieldset>
             </div>
         </div>
-    </section>
+    </x-toolbar>
     <section class="mt-4">
         @if ($sessions->isEmpty())
             <div class="grid place-items-center rounded border p-4 dark:bg-gray-950">
