@@ -13,14 +13,14 @@ class CourseSeeder extends Seeder
      */
     public function run(): void
     {
-        // DB::table('courses')->insert([
-        //     'title' => "Droit des affaires",
-        // ]);
         DB::table('courses')->insert([
             'title' => 'Introduction aux MP',
         ]);
-        // DB::table('courses')->insert([
-        //     'title' => "Macroéconomie",
-        // ]);
+        DB::table('courses')->insert([
+            'title' => "Introduction aux MP en droit",
+        ]);
+        DB::table('courses')->insert([
+            'title' => "Droit des affaires",
+        ]);
     }
 }

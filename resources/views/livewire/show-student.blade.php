@@ -1,6 +1,7 @@
 <div class="container dark:text-slate-200">
+    @dump($sessions)
     <x-flash></x-flash>
-    <x-form class="mt-4 grid gap-2 rounded border p-4 dark:bg-gray-950">
+    <x-form class="mt-4 grid-cols-1 gap-2 rounded border p-4 dark:bg-gray-950">
         <fieldset class="grid grid-cols-2 gap-2 rounded border bg-inherit p-2">
             <legend class="px-2">Information Personnelles</legend>
             <x-form.input :value="$student->first_name" label='Prénom' disabled></x-form.input>

@@ -4,25 +4,27 @@
     </section>
     <section class="mt-4">
         <x-table>
-            <x-table.thead>
-                <th class="p-1">Prénom</th>
+            <thead>
+                <th><input type="checkbox"></th>
+                <th>Prénom</th>
                 <th>Nom</th>
                 <th>Nbr de cours dispensés</th>
                 <th>Nbr d'écoles affectées</th>
                 <th>Nbr de sessions</th>
-            </x-table.thead>
-            <x-table.tbody>
+            </thead>
+            <tbody>
                 @foreach ($instructors as $instructor)
-                    <x-table.tr class="cursor-pointer" wire:click="show({{ $instructor->id }})"
-                        wire:key="{{ $instructor->id }}">
-                        <td class="p-1">{{ $instructor->first_name }}</td>
+                    <tr class="cursor-pointer" wire:click="show({{ $instructor->id }})" wire:key="{{ $instructor->id }}">
+                        <td><input x-on:click="$event.stopPropagation()" type="checkbox"></td>
+                        <td>{{ $instructor->first_name }}</td>
                         <td>{{ $instructor->last_name }}</td>
                         <td>{{ $instructor->courses->count() }}</td>
                         <td>{{ $instructor->schools->count() }}</td>
                         <td>{{ $instructor->sessions->count() }}</td>
-                    </x-table.tr>
+                        {{-- <td>{{ $instructor->courses->schools->count() }}</td> --}}
+                    </tr>
                 @endforeach
-            </x-table.tbody>
+            </tbody>
         </x-table>
     </section>
 </div>

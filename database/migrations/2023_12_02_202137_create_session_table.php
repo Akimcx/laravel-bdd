@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(Instructor::class)->constrained()->cascadeOnUpdate();
             // $table->foreignIdFor(Student::class)->constrained()->cascadeOnUpdate();
             $table->foreignIdFor(School::class)->constrained()->cascadeOnUpdate();
-            $table->date('session_date')->default(DB::raw('CURRENT_DATE'));
+            $table->date('session_date')->useCurrent();
             // $table->boolean('is_present')->default(false);
             $table->softDeletes();
             $table->timestamps();

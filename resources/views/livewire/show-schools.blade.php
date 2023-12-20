@@ -30,7 +30,7 @@
                         <td>{{ $school->courses->count() }}</td>
                         <td>{{ $school->instructors->count() }}</td>
                         <td>{{ $school->students->count() }}</td>
-                        <td>{{ $school->sessions->count() }}</td>
+                        <td>{{ $school->sessions()->count() }}</td>
                     </x-table.tr>
                 @endforeach
             </x-table.tbody>

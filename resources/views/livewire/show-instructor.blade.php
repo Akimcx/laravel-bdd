@@ -3,7 +3,7 @@
         <a href="{{ route('instructors.create') }}">Modifier</a>
     </section>
     <section class="mt-4">
-        <x-form class="grid grid-cols-2 gap-4">
+        <x-form>
             <x-form.input label="Nom" :value="$instructor->last_name"></x-form.input>
             <x-form.input label="Prénom" :value="$instructor->first_name"></x-form.input>
             <details>
@@ -15,18 +15,14 @@
                 <summary>Information sur les cours</summary>
                 @foreach ($instructor->schools as $school)
                     <details>
-                        <summary>{{ $school->sigle }} </summary>
+                        <summary>{{ $school->sigle }}</summary>
                         @foreach ($instructor->courses()->forSchools($school->id)->get() as $course)
                             <details>
                                 <summary>{{ $course->title }}</summary>
                                 @foreach ($instructor->sessions as $session)
-                                    <p><a class="hover:underline"
-                                            href="{{ route('sessions.show', ['session' => $session->id]) }}">
-                                            {{ $session->session_date->format('d M') }} -
-                                            {{ $session->students->count() }}
-                                            étudiants
-                                        </a>
-                                    </p>
+                                    <details>
+                                        <summary>{{ $session->session_date }}</summary>
+                                    </details>
                                 @endforeach
                             </details>
                         @endforeach
