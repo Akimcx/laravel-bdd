@@ -1,4 +1,58 @@
 <div class="container dark:text-slate-200">
+    <x-modal name="showStudent">
+        @if ($modalStudent)
+            <x-form class="border-none">
+                <fieldset class="grid grid-cols-2 gap-2 rounded border bg-inherit p-2">
+                    <legend class="px-2">Information Personnelles</legend>
+                    <x-form.input :value="$modalStudent->first_name" label='Prénom' disabled></x-form.input>
+                    <x-form.input :value="$modalStudent->last_name" label='Nom' disabled></x-form.input>
+                </fieldset>
+                <fieldset class="grid grid-cols-2 gap-2 rounded border bg-inherit p-2">
+                    <legend class="px-2">Cours et Écoles</legend>
+                    <x-form.select multiple disabled label='Cours'>
+                        @foreach ($modalStudent->courses as $course)
+                            <option selected value="{{ $course->id }}">{{ $course->title }}</option>
+                        @endforeach
+                    </x-form.select>
+                    <x-form.input label='Écoles' :value="$modalStudent?->school->sigle" disabled></x-form.input>
+                </fieldset>
+                <fieldset class="grid gap-2 rounded border bg-inherit p-2">
+                    <legend class="px-2">Session</legend>
+                    @if ($modalStudent->sessions->isEmpty())
+                        <p>Aucune session n'a été suivie.</p>
+                        <details>
+                            <summary>Ajouter a une session</summary>
+                            <ul>
+                                @foreach ($sessions as $session)
+                                    <li>{{ $session->session_date->format('d M') }}-{{ $session->course->title }}</li>
+                                @endforeach
+                            </ul>
+                        </details>
+                    @else
+                        <ul>
+                            @foreach ($modalStudent->sessions as $session)
+                                <a class="hover:underline"
+                                    href="{{ route('sessions.show', ['session' => $session->id]) }}">
+                                    <li>
+                                        {{ $session->session_date->format('d M') }}
+                                        -
+                                        {{ $session->course->title }}
+                                        -
+                                        {{ $session->pivot->is_present ? 'Present' : 'Absent' }}
+                                    </li>
+                                </a>
+                            @endforeach
+                        </ul>
+                    @endif
+                </fieldset>
+                <div class="mt-4">
+                    <x-secondary-button href="{{ route('students.create', ['student' => $modalStudent->id]) }}"
+                        link>Modifier</x-secondary-button>
+                    <x-secondary-button href="" link>Fermer</x-secondary-button>
+                </div>
+            </x-form>
+        @endif
+    </x-modal>
     <x-toolbar>
         @auth
             <a class="rounded p-1 dark:hover:bg-gray-700" href="{{ route('sessions.create') }}">
@@ -10,28 +64,25 @@
             ])>
                 <x-icon.delete wire:click="delete"></x-icon.delete>
             </button>
-            <div class="relative rounded p-1 dark:hover:bg-gray-700" x-data="{ open: false }">
-                <x-icon.filter x-on:click="open = !open"></x-icon.filter>
-                <div class="absolute rounded border p-4 dark:bg-gray-950" x-cloak x-show="open"
-                    x-on:click.outside="open = false">
-                    <fieldset class="rounded border p-2">
-                        <legend class="px-2">Presence</legend>
-                        <x-form class="flex gap-2 border-none !p-0">
-                            @foreach ([0, 1] as $key)
-                                <div class="flex items-center gap-1">
-                                    <input wire:model.live="presentProperty" id="{{ $key }}"
-                                        value="{{ $key }}" name="presentProperty" type="radio" />
-                                    <label for="{{ $key }}">{{ $key === 1 ? 'Présent' : 'Absent' }}
-                                    </label>
-                                </div>
-                            @endforeach
-                            <x-icon.x-mark class="rounded p-1 dark:hover:bg-rose-900"
-                                wire:click="rset('presentProperty')"></x-icon.x-mark>
-                        </x-form>
-                    </fieldset>
-                </div>
-            </div>
         @endauth
+        <x-icon.filter>
+            <fieldset class="rounded border p-2">
+                <legend class="px-2">Presence</legend>
+                <x-form class="flex gap-2 border-none !p-0">
+                    @foreach ([0, 1] as $key)
+                        <div class="flex items-center gap-1">
+                            <input wire:model.live="presentProperty" id="{{ $key }}"
+                                value="{{ $key }}" name="presentProperty" type="radio" />
+                            <label for="{{ $key }}">{{ $key === 1 ? 'Présent' : 'Absent' }}
+                            </label>
+                        </div>
+                    @endforeach
+                    <button class="rounded p-1 dark:hover:bg-rose-900">
+                        <x-icon.x-mark wire:click="rset('presentProperty')"></x-icon.x-mark>
+                    </button>
+                </x-form>
+            </fieldset>
+        </x-icon.filter>
     </x-toolbar>
     <section class="mt-4">
         <details>
@@ -62,22 +113,26 @@
             <x-table.thead>
                 <x-table.th class="p-1">Nom</x-table.th>
                 <x-table.th>Prénom</x-table.th>
-                <th>Présent</th>
+                <x-table.th>Présent</x-table.th>
             </x-table.thead>
             <x-table.tbody>
                 @foreach ($students as $student)
-                    <x-table.tr @class(['italic text-gray-500' => !$student->pivot->is_present]) :value="$student->id" wire:key="{{ $student->id }}">
+                    <x-table.tr x-on:click="$wire.dispatch('open-modal',{name:'showStudent',id:'{{ $student->id }}'})"
+                        @class([
+                            'cursor-pointer',
+                            'italic text-gray-500' => !$student->pivot->is_present,
+                        ]) :value="$student->id" wire:key="{{ $student->id }}">
                         <td>{{ $student->last_name }}</td>
                         <td>{{ $student->first_name }}</td>
-                        <td>
+                        <td x-on:click="$event.stopPropagation()">
                             <label class="relative m-1 inline-flex cursor-pointer items-center">
-                                <input class="peer sr-only" value="{{ $student->id }}"
-                                    wire:model.live.number='presentBoxes'
+                                <input class="peer sr-only" wire.model.live='presentBoxes'
                                     wire:click='toggleStudentPresence({{ $student->id }})' type="checkbox"
                                     @checked($student->pivot->is_present)>
                                 <div
-                                    class="peer h-6 w-11 rounded-full after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:transition-all after:content-[''] peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full dark:border-gray-900 dark:bg-gray-700 dark:after:border-gray-300 dark:after:bg-white dark:peer-checked:bg-emerald-600 dark:peer-checked:after:border-white dark:peer-focus:border-none">
+                                    class="peer h-6 w-11 rounded-full after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:transition-all after:content-[''] peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full dark:border-gray-900 dark:bg-gray-700 dark:after:border-gray-300 dark:after:bg-white dark:peer-checked:bg-indigo-600 dark:peer-checked:after:border-white dark:peer-focus:border-none">
                                 </div>
+                            </label>
                         </td>
                     </x-table.tr>
                 @endforeach
@@ -93,3 +148,10 @@
         </x-secondary-button>
     </section>
 </div>
+@script
+    <script>
+        $wire.on('open-modal', (e) => {
+            console.log(e);
+        });
+    </script>
+@endscript

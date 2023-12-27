@@ -53,19 +53,19 @@ Route::prefix('courses')->name('courses.')->group(function () {
 });
 
 Route::prefix('instructors')->name('instructors.')->group(function () {
-    Route::get('/create', CreateInstructor::class)
-        ->name('create');
     Route::get('/', ShowInstructors::class)
         ->name('home');
+    Route::get('/create', CreateInstructor::class)
+        ->name('create');
     Route::get('/{instructor}', ShowInstructor::class)
         ->name('show');
 });
 
 Route::prefix('schools')->name('schools.')->group(function () {
-    Route::get('/create', CreateSchool::class)
-        ->name('create');
     Route::get('/', ShowSchools::class)
         ->name('home');
+    Route::get('/create/{school?}', CreateSchool::class)
+        ->name('create');
     Route::get('/{school}', ShowSchool::class)
         ->name('show');
 });
@@ -73,7 +73,7 @@ Route::prefix('schools')->name('schools.')->group(function () {
 Route::prefix('students')->name('students.')->group(function () {
     Route::get('/', ShowStudents::class)
         ->name('home');
-    Route::get('/create', CreateStudent::class)
+    Route::get('/create/{student?}', CreateStudent::class)
         ->name('create');
     Route::get('/{student}', ShowStudent::class)
         ->name('show');

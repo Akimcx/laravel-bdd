@@ -7,6 +7,22 @@
         @endauth
         <x-icon.print></x-icon.print>
     </section>
+    <x-toolbar class="">
+        @auth
+            <a class="rounded p-1 dark:hover:bg-gray-700"
+                href="{{ route('students.create') }}"><x-icon.add-user></x-icon.add-user></a>
+            <button @class([
+                'rounded p-1 dark:hover:bg-gray-700',
+                'hidden' => sizeof($boxes) === 0,
+            ])>
+                <x-icon.delete wire:click='delete' wire:confirmation="sur?"></x-icon.delete>
+            </button>
+        @endauth
+        <x-icon.filter>
+            <x-filter.school></x-filter.school>
+            {{-- <x-filter.instructor></x-filter.instructor> --}}
+        </x-icon.filter>
+    </x-toolbar>
     <section class="mt-4">
         <x-table>
             <x-table.thead>

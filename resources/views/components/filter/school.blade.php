@@ -9,6 +9,8 @@
                     type="checkbox" />
             </div>
         @endforeach
-        <x-icon.x-mark class="rounded p-1 dark:hover:bg-rose-900" wire:click="rset('schoolsProperty')"></x-icon.x-mark>
+        <button class="rounded p-1 dark:hover:bg-rose-900">
+            <x-icon.x-mark wire:click="rset('schoolsProperty')"></x-icon.x-mark>
+        </button>
     </x-form>
 </fieldset>

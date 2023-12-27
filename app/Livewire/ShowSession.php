@@ -12,6 +12,7 @@ use Livewire\Component;
 class ShowSession extends Component
 {
     public Session $session;
+    public Student $modalStudent;
     public $presentBoxes = [];
     #[Url(as: 'present')]
     public $presentProperty;
@@ -23,6 +24,13 @@ class ShowSession extends Component
     public $last_name;
 
     public $boxes = [];
+
+    #[On('open-modal')]
+    public function showStudent($id): void
+    {
+        $this->modalStudent = Student::find($id);
+        // $this->redirectRoute('students.show', $id);
+    }
 
     public function addStudent(): void
     {
@@ -71,7 +79,6 @@ class ShowSession extends Component
 
     public function render()
     {
-        // dd($this->session->students()->where('pivot_is_present', 0)->get());
         return view('livewire.show-session')->with([
             'students' => $this->session->students()
                 ->when($this->presentProperty !== null, function ($q) {

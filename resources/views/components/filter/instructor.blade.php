@@ -1,6 +1,8 @@
 <fieldset class="rounded border p-2">
     <legend class="px-2">Professeur</legend>
-    <x-icon.x-mark class="rounded p-1 dark:hover:bg-rose-900" wire:click="rset('instructorsProperty')"></x-icon.x-mark>
+    <button class="rounded p-1 dark:hover:bg-rose-900">
+        <x-icon.x-mark wire:click="rset('instructorsProperty')"></x-icon.x-mark>
+    </button>
     <x-form class="border-none !p-0">
         @foreach (App\Models\Instructor::all() as $instructor)
             <div>

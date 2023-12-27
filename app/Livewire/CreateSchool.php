@@ -52,8 +52,6 @@ class CreateSchool extends Component
             'phone' => 'required|min:8',
             'email' => 'required|email',
         ]);
-
-        // dd($name, $value);
     }
     public function render()
     {

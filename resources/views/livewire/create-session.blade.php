@@ -15,7 +15,9 @@
             <x-form.select name='school_id' wire:model.change='school_id' label='Écoles'>
                 <option value="">Choisir</option>
                 @foreach ($schools as $school)
-                    <option value="{{ $school->id }}">{{ $school->sigle }}</option>
+                    <option selected="{{ sizeof($schools) === 1 }}" value="{{ $school->id }}">
+                        {{ $school->sigle }}
+                    </option>
                 @endforeach
             </x-form.select>
             <a href="{{ route('schools.create') }}">Ajouter une école</a>

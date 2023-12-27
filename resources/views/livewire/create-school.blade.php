@@ -17,8 +17,14 @@
             <x-form.input class="w-full" wire:model.blur='url' type="url" label="URL"></x-form.input>
         </fieldset>
         <div class="grid grid-cols-2 gap-4 bg-inherit">
-            <x-form.select class="w-full" :disabled="$courses->isEmpty()" label="Cours"></x-form.select>
+            <x-form.select class="w-full" :disabled="$courses->isEmpty()" label="Cours">
+                <option value="">Choisir</option>
+                @foreach ($courses as $course)
+                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+                @endforeach
+            </x-form.select>
             <x-form.select class="w-full" :disabled="$instructors->isEmpty()" label="Professeur">
+                <option value="">Choisir</option>
                 @foreach ($instructors as $instructor)
                     <option value="{{ $instructor->id }}">{{ $instructor->first_name }} {{ $instructor->last_name }}
                     </option>
@@ -27,6 +33,11 @@
             <a class="text-sm underline" href="{{ route('courses.create') }}">Ajouter un cours</a>
             <a class="text-sm underline" href="{{ route('instructors.create') }}">Ajouter un professeur</a>
         </div>
-        <button class="rounded border p-2 dark:bg-gray-900 dark:hover:bg-gray-800">Ajouter</button>
+        <div>
+            <x-primary-button>Ajouter</x-primary-button>
+            <x-secondary-button wire:click="store(true)">Ajouter & Fermer</x-secondary-button>
+            <x-secondary-button class="cursor-pointer" href="{{ route('schools.home') }}"
+                link>Fermer</x-secondary-button>
+        </div>
     </form>
 </div>

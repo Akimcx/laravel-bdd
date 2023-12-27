@@ -1,6 +1,12 @@
 <div class="container dark:text-slate-200">
+    <x-toolbar class="mt-4">
+        <a class="rounded p-1 dark:hover:bg-gray-700" href="{{ route('instructors.create') }}">
+            <x-icon.edit></x-icon.edit>
+        </a>
+    </x-toolbar>
     <section class="mt-4">
-        <a href="{{ route('instructors.create') }}">Modifier</a>
+        <x-form class="grid grid-cols-2 gap-4">
+            <a href="{{ route('instructors.create') }}">Modifier</a>
     </section>
     <section class="mt-4">
         <x-form class="grid grid-cols-2 gap-4">

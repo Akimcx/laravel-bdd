@@ -77,15 +77,10 @@ new class extends Component {
         </p>
     </header>
 
-    <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
-        <div>
-            <x-form.input name='first_name' wire:model="first_name" :label="__('Prénom')"></x-form.input>
-        </div>
-        <div>
-            <x-form.input name='last_name' wire:model="last_name" :label="__('Nom')"></x-form.input>
-        </div>
-
-        <div>
+    <x-form class="mt-6 space-y-6 dark:text-slate-200" wire:submit="updateProfileInformation">
+        <x-form.input name='first_name' wire:model="first_name" :label="__('Prénom')"></x-form.input>
+        <x-form.input name='last_name' wire:model="last_name" :label="__('Nom')"></x-form.input>
+        <div class="bg-inherit">
             <x-form.input type='email' wire:model="email" :label="__('Email')"></x-form.input>
 
             @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail &&
@@ -116,5 +111,5 @@ new class extends Component {
                 {{ __('Saved.') }}
             </x-action-message>
         </div>
-    </form>
+    </x-form>
 </section>
