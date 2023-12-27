@@ -48,20 +48,12 @@ new class extends Component {
         </p>
     </header>
 
-    <form wire:submit="updatePassword" class="mt-6 space-y-6">
-        <div>
-            <x-form.input wire:model="current_password" name="current_password" type='password'
-                :label="__('Current Password')"></x-form.input>
-        </div>
-
-        <div>
-            <x-form.input wire:model="password" name="password" type='password' :label="__('New Password')"></x-form.input>
-        </div>
-
-        <div>
-            <x-form.input wire:model="password_confirmation" name="password_confirmation" type='password'
-                :label="__('New Password')"></x-form.input>
-        </div>
+    <x-form class="mt-6 space-y-6 dark:text-slate-200" wire:submit="updatePassword">
+        <x-form.input wire:model="current_password" name="current_password" type='password'
+            :label="__('Current Password')"></x-form.input>
+        <x-form.input wire:model="password" name="password" type='password' :label="__('New Password')"></x-form.input>
+        <x-form.input wire:model="password_confirmation" name="password_confirmation" type='password'
+            :label="__('New Password')"></x-form.input>
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
@@ -70,5 +62,5 @@ new class extends Component {
                 {{ __('Saved.') }}
             </x-action-message>
         </div>
-    </form>
+    </x-form>
 </section>

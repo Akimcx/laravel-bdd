@@ -1,17 +1,16 @@
 <div class="container dark:text-slate-200">
     <x-flash></x-flash>
-    <x-toolbar class="mt-4">
+    <x-toolbar>
         @auth
-            <a href="{{ route('schools.create') }}">Ajouter une école</a>
+            <a class="rounded p-1 dark:hover:bg-gray-700" href="{{ route('schools.create') }}">
+                <x-icon.sign-plus></x-icon.sign-plus>
+            </a>
         @endauth
-        <div class="relative rounded p-1 dark:hover:bg-gray-700" x-data="{ open: false }">
-            <x-icon.filter x-on:click="open = !open"></x-icon.filter>
-            <div class="absolute rounded border p-4 dark:bg-gray-950" x-cloak x-show="open"
-                x-on:click.outside="open = false">
-                <x-filter.school></x-filter.school>
-                <x-filter.instructor></x-filter.instructor>
-            </div>
-        </div>
+        <x-icon.filter x-on:click="open = !open">
+            <button class="hover:underline dark:text-rose-500">Reset</button>
+            <x-filter.school></x-filter.school>
+            <x-filter.instructor></x-filter.instructor>
+        </x-icon.filter>
     </x-toolbar>
     <section class="mt-4">
         <x-table>

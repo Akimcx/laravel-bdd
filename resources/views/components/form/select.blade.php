@@ -1,4 +1,4 @@
-@props(['label', 'name' => strtolower($label)])
+@props(['label' => '', 'name' => strtolower($label ?? '')])
 <div class="relative bg-inherit dark:text-slate-200">
     <select
         {{ $attributes->merge(['class' => 'w-full peer rounded border p-2 bg-inherit py-4 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-1 focus-visible:placeholder:hidden dark:focus-visible:outline-slate-200']) }}

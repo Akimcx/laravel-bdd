@@ -1,12 +1,21 @@
 <div class="container dark:text-slate-200">
     <x-flash></x-flash>
-    <section class="mt-4 flex gap-4 rounded p-2 dark:bg-gray-950 dark:fill-slate-200">
+    <x-toolbar class="">
         @auth
-            <a href="{{ route('students.create') }}"><x-icon.add-user></x-icon.add-user></a>
-            <x-icon.delete wire:click='delete' wire:confirmation="sur?"></x-icon.delete>
+            <a class="rounded p-1 dark:hover:bg-gray-700"
+                href="{{ route('students.create') }}"><x-icon.add-user></x-icon.add-user></a>
+            <button @class([
+                'rounded p-1 dark:hover:bg-gray-700',
+                'hidden' => sizeof($boxes) === 0,
+            ])>
+                <x-icon.delete wire:click='delete' wire:confirmation="sur?"></x-icon.delete>
+            </button>
         @endauth
-        <x-icon.print></x-icon.print>
-    </section>
+        <x-icon.filter>
+            <x-filter.school></x-filter.school>
+            {{-- <x-filter.instructor></x-filter.instructor> --}}
+        </x-icon.filter>
+    </x-toolbar>
     <section class="mt-4">
         <x-table>
             <x-table.thead>

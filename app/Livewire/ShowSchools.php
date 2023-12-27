@@ -3,20 +3,13 @@
 namespace App\Livewire;
 
 use App\Models\School;
+use App\Traits\FilterBar;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class ShowSchools extends Component
 {
-
-    #[Url(as: 'ss')]
-    public $schoolsProperty = [];
-    #[Url(as: 'ps')]
-    public $instructorsProperty = [];
-    public function rset(...$properties): void
-    {
-        $this->reset($properties);
-    }
+    use FilterBar;
     public function show(int $id): void
     {
         $this->redirectRoute('schools.show', $id, navigate: true);

@@ -43,14 +43,19 @@ class Course extends Model
         return $this->belongsToMany(School::class);
     }
 
-    public function scopeInstructors(Builder $builder, $id): void
+    public function notes(): HasMany
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function scopeForInstructors(Builder $builder, $id): void
     {
         $builder->whereHas('instructors', function ($q) use ($id) {
             is_array($id) ? $q->whereIn('instructor_id', $id) : $q->where('instructor_id', $id);
         });
     }
 
-    public function scopeSchools(Builder $builder, $id): void
+    public function scopeForSchools(Builder $builder, $id): void
     {
         $builder->whereHas('schools', function ($q) use ($id) {
             is_array($id) ? $q->whereIn('school_id', $id) : $q->where('school_id', $id);

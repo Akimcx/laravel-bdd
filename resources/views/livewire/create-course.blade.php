@@ -1,7 +1,10 @@
 <div class="container dark:text-slate-200">
+    @php
+        $add = $course->id === null;
+    @endphp
     <h1 class="text-2xl font-bold">Ajout d'un nouveau cours</h1>
     <form class="mt-4 grid gap-4 rounded border p-4 dark:border-gray-700 dark:bg-gray-950"
-        wire:submit={{ $course->id === null ? 'store' : 'edit' }}>
+        wire:submit={{ $add ? 'store' : 'edit' }}>
         <x-form.input class="w-full invalid:border-red-600 dark:bg-inherit" wire:model.blur='title' name='title'
             label="Titre"></x-form.input>
         <x-form.textarea class="w-full" wire:model.blur='description' label="Description"></x-form.textarea>
@@ -23,8 +26,10 @@
             <a class="text-sm underline" href="{{ route('instructors.create') }}">Ajouter un professeur</a>
             <a class="text-sm underline" href="{{ route('schools.create') }}">Ajouter une école</a>
         </div>
-
-        <button
-            class="rounded border p-2 dark:bg-gray-900 dark:hover:bg-gray-800">{{ $course->id === null ? 'Ajouter' : 'Modifier' }}</button>
+        <div>
+            <x-primary-button>{{ $add ? 'Ajouter' : 'Modifier' }}</x-primary-button>
+            <x-secondary-button link
+                href="{{ route('courses.home') }}">{{ $add ? 'Fermer' : 'Annuler' }}</x-secondary-button>
+        </div>
     </form>
 </div>

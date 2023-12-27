@@ -3,26 +3,17 @@
 namespace App\Livewire;
 
 use App\Models\Session;
+use App\Traits\FilterBar;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class ShowSessions extends Component
 {
-    use WithPagination;
+    use WithPagination, FilterBar;
 
-    #[Url(as: 'spp')]
-    public $schoolsProperty = [];
-    #[Url(as: 'ipp')]
-    public $instructorsProperty = [];
-    #[Url(as: 'cpp')]
-    public $coursesProperty = [];
     public $boxes = [];
 
-    public function rset(...$properties): void
-    {
-        $this->reset($properties);
-    }
     public function show(int $id): void
     {
         $this->redirectRoute('sessions.show', $id);

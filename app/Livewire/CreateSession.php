@@ -6,9 +6,11 @@ use App\Models\Course;
 use App\Models\Instructor;
 use App\Models\Session;
 use App\Models\Student;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
+use function Livewire\Volt\updated;
 
 class CreateSession extends Component
 {
@@ -39,13 +41,16 @@ class CreateSession extends Component
 
     function updatedCourseId($value): void
     {
-        if ($value === "") {
+        if ($value === null) {
             $this->reset('school_id', 'instructor_id', 'schools', 'instructors', 'students');
             return;
         }
+        $this->reset('school_id', 'instructor_id', 'schools', 'instructors', 'students');
         $this->schools = Course::find($value)->schools;
-        if (is_null($this->school_id) || is_null($this->course_id)) return;
-        $this->students = Student::schools($this->school_id)->Incourses($this->course_id)->get();
+        if (sizeof($this->schools) === 1) {
+            $this->school_id = (int)$this->schools[0]->id;
+            $this->updatedSchoolId();
+        }
     }
 
     function updatedSchoolId(): void
@@ -53,6 +58,10 @@ class CreateSession extends Component
         if (is_null($this->school_id) || is_null($this->course_id)) return;
         $this->students = Student::schools($this->school_id)->Incourses($this->course_id)->get();
         $this->instructors = Instructor::inSchools($this->school_id)->inCourses($this->course_id)->get();
+        if (sizeof($this->instructors) === 1) {
+            $this->instructor_id = (int)$this->instructors[0]->id;
+            // $this->updatedSchoolId();
+        }
     }
 
     function store($redirect = false): void

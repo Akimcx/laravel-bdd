@@ -1,12 +1,18 @@
 <div class="container dark:text-slate-200">
-    <section class="mt-4">
-        <a href="{{ route('instructors.create') }}">Ajouter un professeur</a>
-    </section>
+    <x-toolbar class="mt-4">
+        <a class="rounded p-1 dark:hover:bg-gray-700" href="{{ route('instructors.create') }}">
+            <x-icon.add-user></x-icon.add-user>
+        </a>
+        <x-icon.filter>
+            <x-filter.school></x-filter.school>
+            <x-filter.instructor></x-filter.instructor>
+        </x-icon.filter>
+    </x-toolbar>
     <section class="mt-4">
         <x-table>
             <x-table.thead>
-                <th class="p-1">Prénom</th>
-                <th>Nom</th>
+                <x-table.th class="p-1">Prénom</x-table.th>
+                <x-table.th>Nom</x-table.th>
                 <th>Nbr de cours dispensés</th>
                 <th>Nbr d'écoles affectées</th>
                 <th>Nbr de sessions</th>

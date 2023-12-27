@@ -1,7 +1,9 @@
 <div class="container dark:text-slate-200">
-    <section class="mt-4">
-        <a href="{{ route('instructors.create') }}">Modifier</a>
-    </section>
+    <x-toolbar class="mt-4">
+        <a class="rounded p-1 dark:hover:bg-gray-700" href="{{ route('instructors.create') }}">
+            <x-icon.edit></x-icon.edit>
+        </a>
+    </x-toolbar>
     <section class="mt-4">
         <x-form class="grid grid-cols-2 gap-4">
             <x-form.input label="Nom" :value="$instructor->last_name"></x-form.input>
